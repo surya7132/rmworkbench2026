@@ -1,0 +1,11 @@
+{% if not groups %}
+<div class="bg-white rounded-xl border border-dashed border-slate-300 p-10 text-center text-slate-500">Nothing here. Try another filter.</div>
+{% endif %}
+{% for key, label, items in groups %}
+<section class="mb-6">
+  <h2 class="text-sm font-bold uppercase tracking-wide mb-2 {{ 'text-red-600' if key == 'overdue' else 'text-slate-500' }}">{{ label }} <span class="font-medium text-slate-400">({{ items|length }})</span></h2>
+  <div class="space-y-2">
+    {% for w in items %}{% include "work/_row.html" %}{% endfor %}
+  </div>
+</section>
+{% endfor %}

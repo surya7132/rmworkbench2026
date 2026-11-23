@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Spreading{% endblock %}
+{% block heading %}Spreading{% endblock %}
+{% block content %}
+<p class="mb-5 max-w-3xl text-sm text-slate-600">Spreading means copying the key numbers from a client's annual report into a standard form. Compass reads them for you. You check them against the report, fix what is flagged, and sign off.</p>
+<section class="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" x-data="{ busy: false, name: '' }">
+  <h2 class="text-sm font-bold text-slate-900">Upload a report</h2>
+  <p class="mt-0.5 text-xs text-slate-500">Choose the client, fill in the details and add the file. Compass reads the figures and opens a spread for you to check.</p>
+  {% if error %}<div class="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/spreading/upload" enctype="multipart/form-data" @submit="busy = true" class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6">
+    <label class="text-xs font-medium text-slate-600 xl:col-span-2">Client
+      <select name="client" required class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+        <option value="">Pick a client</option>
+        {% for c in clients %}<option value="{{ c.id }}" {{ 'selected' if form.client == c.id }}>{{ c.short_name }}</option>{% endfor %}
+      </select></label>
+    <label class="text-xs font-medium text-slate-600 xl:col-span-2">Document
+      <select name="doc_type" required class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+        {% for t in doc_types %}<option {{ 'selected' if form.doc_type == t }}>{{ t }}</option>{% endfor %}
+      </select></label>
+    <label class="text-xs font-medium text-slate-600">Financial year
+      <select name="fiscal_year" required class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+        {% for y in years %}<option {{ 'selected' if form.fiscal_year == y or (not form.fiscal_year and loop.index == 2) }}>{{ y }}</option>{% endfor %}
+      </select></label>
+    <label class="text-xs font-medium text-slate-600">Basis
+      <select name="basis" required class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+        {% for b in bases %}<option {{ 'selected' if form.basis == b }}>{{ b }}</option>{% endfor %}
+      </select></label>
+    <label class="text-xs font-medium text-slate-600">Unit
+      <select name="unit" required class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+        {% for u in units %}<option {{ 'selected' if form.unit == u }}>{{ u }}</option>{% endfor %}
+      </select></label>
+    <div class="md:col-span-2 xl:col-span-4">
+      <span class="text-xs font-medium text-slate-600">Report file</span>
+      <label class="mt-1 flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-600 hover:bg-slate-100">
+        <span class="rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 ring-1 ring-slate-300">Choose file</span>
+        <span x-text="name || 'No file chosen'" class="truncate"></span>
+        <input type="file" name="file" required accept=".pdf,application/pdf" class="sr-only" @change="name = $event.target.files[0] ? $event.target.files[0].name : ''">
+      </label>
+    </div>
+    <div class="flex items-end md:col-span-2">
+      <button :disabled="busy" class="w-full rounded-lg bg-navy-800 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60"><span x-show="!busy">Upload and read</span><span x-show="busy" x-cloak>Reading the report…</span></button>
+    </div>
+  </form>
+</section>
+
+<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500">
+      <tr><th class="px-4 py-3">Client and report</th><th class="px-4 py-3">Basis</th><th class="px-4 py-3">Received</th><th class="px-4 py-3">Progress</th><th class="px-4 py-3">Status</th></tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for s in spreads %}
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-3"><a href="/spreading/{{ s.id }}" class="font-semibold text-blue-800 hover:underline">{{ s.client_name }}</a><div class="text-xs text-slate-500">{{ s.name }}</div></td>
+        <td class="px-4 py-3 text-slate-600">{{ s.basis }}<div class="text-xs text-slate-400">{{ s.unit }}</div></td>
+        <td class="px-4 py-3 text-slate-600">{{ s.uploaded }}</td>
+        <td class="px-4 py-3">
+          <div class="h-1.5 w-40 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-emerald-500" data-w="{{ (100 * s.progress.reviewed / s.progress.total)|round|int }}" x-data :style="{ width: $el.dataset.w + '%' }"></div></div>
+          <div class="mt-1 text-xs text-slate-500">{{ s.progress.reviewed }} of {{ s.progress.total }} lines checked{% if s.progress.to_fix %} · <b class="text-red-700">{{ s.progress.to_fix }} to fix</b>{% endif %}</div>
+        </td>
+        <td class="px-4 py-3">{% if s.complete %}<span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800">Signed off</span>{% elif s.progress.to_fix or s.progress.failing %}<span class="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">Needs fixing</span>{% else %}<span class="rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-semibold text-sky-800">Ready to review</span>{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="px-4 py-8 text-center text-slate-500">No annual reports waiting to be spread.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

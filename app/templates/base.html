@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Compass{% endblock %} · Compass</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>tailwind.config = {theme: {extend: {colors: {navy: {900: '#0b1d3a', 800: '#12294d', 700: '#1d3f77'}}, fontFamily: {sans: ['Inter', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif']}}}}</script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+{% set nav = [
+  ('Daily work', [('work','Work','/work',0,'M9 11l3 3 8-8M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h9'),
+                  ('clients','Clients','/clients',0,'M3 21h18M5 21V7l7-4 7 4v14M9 10h2M13 10h2M9 14h2M13 14h2'),
+                  ('events','Market events','/events',0,'M4 14l4-4 3 3 5-6 4 4M3 20h18'),
+                  ('meetings','Meetings','/meetings',0,'M4 5h16v15H4zM4 10h16M9 3v4M15 3v4'),
+                  ('alerts','Early warnings','/alerts',0,'M12 3l10 18H2zM12 10v5M12 18v.01'),
+                  ('spreading','Spreading','/spreading',0,'M4 4h16v16H4zM4 10h16M10 4v16')])
+] %}
+<div class="h-screen flex overflow-hidden">
+  <aside class="w-64 shrink-0 h-full flex flex-col text-slate-300 bg-gradient-to-b from-[#0e2347] via-navy-900 to-[#081428] border-r border-white/5">
+    <div class="px-5 pt-6 pb-5 flex items-center gap-3">
+      <span class="h-10 w-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 shadow-lg shadow-blue-900/40 flex items-center justify-center">
+        <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor"/></svg>
+      </span>
+      <span class="leading-tight">
+        <span class="block text-lg font-extrabold tracking-tight text-white">Compass</span>
+        <span class="block text-[11px] font-medium text-sky-300/80">RM workbench</span>
+      </span>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 pb-4 text-sm" aria-label="Main">
+      {% for section, items in nav %}
+      <div class="px-3 pt-5 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">{{ section }}</div>
+      <div class="space-y-1">
+        {% for key, label, href, step, icon in items %}
+        {% set on = active == key %}
+        <a href="{{ href }}" {% if on %}aria-current="page"{% endif %}
+           class="group relative flex items-center gap-3 rounded-xl px-3 py-2.5 transition {{ 'bg-white/10 text-white font-semibold shadow-inner ring-1 ring-white/10' if on else ('text-slate-400 hover:bg-white/5 hover:text-slate-200' if step else 'text-slate-300 hover:bg-white/5 hover:text-white') }}">
+          {% if on %}<span class="absolute -left-3 top-2 bottom-2 w-1 rounded-r-full bg-sky-400"></span>{% endif %}
+          <svg class="h-[18px] w-[18px] shrink-0 {{ 'text-sky-300' if on else 'text-slate-500 group-hover:text-sky-300' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ icon }}"/></svg>
+          <span class="flex-1">{{ label }}</span>
+          {% if step %}<span class="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-slate-500">Soon</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </nav>
+    <div class="mx-3 mb-3 rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+      <div class="text-[11px] font-semibold text-slate-200">One client context</div>
+      <div class="mt-0.5 text-[11px] leading-snug text-slate-400">Enter it once. Every screen picks it up.</div>
+    </div>
+    <div class="px-5 pb-4 text-[11px] text-slate-500">Built by Mu Sigma</div>
+  </aside>
+  <div class="flex-1 min-w-0 h-full flex flex-col">
+    <header class="relative z-30 shrink-0 bg-white border-b border-slate-200 px-6 h-16 flex items-center justify-between gap-4">
+      <h1 class="text-lg font-bold tracking-tight text-slate-900">{% block heading %}{% endblock %}</h1>
+      <div class="flex items-center gap-4">
+        <!-- Date -->
+        <div class="hidden md:flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-1.5 text-xs">
+          <svg class="h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+          <span class="font-semibold text-slate-900">{{ demo_now() }}</span>
+        </div>
+
+        <!-- User menu -->
+        <div class="relative" x-data="{open: false}" @click.outside="open = false" @keydown.escape.window="open = false">
+          <button type="button" @click="open = !open" :aria-expanded="open" class="flex items-center gap-2.5 rounded-full pl-1 pr-2.5 py-1 hover:bg-slate-100 transition">
+            <span class="h-9 w-9 rounded-full bg-navy-800 text-white text-xs font-bold flex items-center justify-center">{{ user['initials'] }}</span>
+            <span class="hidden sm:block text-left leading-tight"><span class="block text-sm font-semibold text-slate-900">{{ user['name'] }}</span><span class="block text-xs text-slate-500">{{ user['role'] }}</span></span>
+            <svg class="h-4 w-4 text-slate-400 transition" :class="open ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+          </button>
+          <div x-show="open" x-cloak x-transition.origin.top.right class="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-lg z-30 overflow-hidden">
+            <form method="post" action="/reset" onsubmit="return confirm('Reset the demo? All changes made so far are discarded.')" class="border-b border-slate-100">
+              <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-50"><span class="block font-medium text-slate-800">Reset demo</span><span class="block text-xs text-slate-500">Discard changes and start again</span></button>
+            </form>
+            <form method="post" action="/logout"><button class="w-full text-left px-4 py-2.5 text-sm font-medium text-slate-800 hover:bg-slate-50">Sign out</button></form>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main id="main" class="flex-1 overflow-y-auto p-6">{% block content %}{% endblock %}</main>
+  </div>
+</div>
+</body>
+</html>

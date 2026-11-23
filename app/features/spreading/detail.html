@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Spreading · {{ doc.client_name }}{% endblock %}
+{% block heading %}Spreading{% endblock %}
+{% block content %}
+<div class="mb-4 flex flex-wrap items-center gap-2 text-sm">
+  <a href="/spreading" class="text-blue-800 hover:underline">All spreads</a><span class="text-slate-400">/</span>
+  <a href="/clients/{{ doc.client_group_id }}" class="font-semibold text-blue-800 hover:underline">{{ doc.client_name }}</a>
+  <span class="text-slate-600">· {{ doc.fiscal_year }} · {{ doc.basis }} · {{ doc.unit }}</span>
+</div>
+<div x-data="{ page: {{ first_page }} }" data-pdf="/spreading/{{ doc.id }}/pdf" class="grid gap-5 xl:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+  <section class="xl:sticky xl:top-0 xl:self-start">
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="flex items-center justify-between border-b border-slate-100 px-4 py-2.5 text-xs">
+        <span class="font-semibold text-slate-700">The report</span>
+        <span class="text-slate-500">Showing page <b x-text="page"></b> of {{ doc.page_count }} of this extract</span>
+      </div>
+      <iframe title="Annual report" class="h-[75vh] w-full bg-slate-50" :src="$root.dataset.pdf + '?p=' + page + '#page=' + page"></iframe>
+    </div>
+    <p class="mt-2 text-xs text-slate-500">Click any line on the right to jump to its page in the report.</p>
+  </section>
+  <section id="spread-body" class="min-w-0">{% include "spreading/_body.html" %}</section>
+</div>
+{% endblock %}

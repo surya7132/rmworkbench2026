@@ -1,0 +1,36 @@
+{% from "_macros.html" import sev_chip %}
+{% if not events %}
+<div class="rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center text-sm text-slate-500">No events match. Clear the search or pick another filter.</div>
+{% else %}
+{% set ns = namespace(day='') %}
+<div class="space-y-2.5">
+{% for e in events %}
+  {% set day = e.published_at[:10] %}
+  {% if day != ns.day %}{% set ns.day = day %}
+  <div class="pt-3 pb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">{{ e.published_at|ddmmm }}</div>
+  {% endif %}
+  <a href="/events/{{ e.id }}" class="group flex gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-blue-300 hover:shadow-md">
+    <span class="w-1 shrink-0 rounded-full {{ {'High':'bg-red-500','Medium':'bg-amber-400','Low':'bg-slate-300'}[e.severity] }}"></span>
+    <div class="min-w-0 flex-1">
+      <div class="flex flex-wrap items-center gap-2">
+        {{ sev_chip(e.severity) }}
+        <span class="text-xs font-medium text-slate-600">{{ e.event_type }}</span>
+        {% if e.sector %}<span class="text-xs text-slate-400">· {{ e.sector }}</span>{% endif %}
+        <span class="ml-auto text-xs text-slate-400">{{ e.published_at[11:16] }}</span>
+      </div>
+      <div class="mt-1.5 font-semibold leading-snug text-slate-900 group-hover:text-blue-800">{{ e.headline }}</div>
+      <div class="mt-1 text-xs text-slate-500">{{ e.source_name }}</div>
+    </div>
+    <div class="hidden w-44 shrink-0 flex-col items-end justify-center gap-1 text-right text-xs sm:flex">
+      {% if e.status == 'pending' %}
+        <span class="rounded-full bg-blue-600 px-2.5 py-1 font-semibold text-white">Needs routing</span>
+      {% else %}
+        <span class="text-slate-600">{% if e.n_clients %}<b class="text-slate-900">{{ e.n_clients }}</b> client{{ '' if e.n_clients == 1 else 's' }} reached{% else %}No client reached{% endif %}</span>
+        {% if e.n_mine %}<span class="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-blue-700">{{ e.n_mine }} of yours</span>{% endif %}
+        {% if e.n_tasks %}<span class="text-slate-400">{{ e.n_tasks }} task{{ '' if e.n_tasks == 1 else 's' }} created</span>{% endif %}
+      {% endif %}
+    </div>
+  </a>
+{% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% from "_macros.html" import sev_chip, state_chip %}
+{% block title %}{{ e.headline[:40] }}{% endblock %}
+{% block heading %}Market event{% endblock %}
+{% block content %}
+{% set pending = e.status == 'pending' %}
+<a href="/events" class="mb-4 inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline">&larr; All market events</a>
+
+{% if error %}<div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{{ error }}</div>{% endif %}
+{% if done %}
+<div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900" role="status">
+  <span><b>Routed.</b> {{ done|length }} task{{ '' if done|length == 1 else 's' }} created and sent to {{ tasks|map(attribute='owner_id')|unique|list|length }} people. Their work queues already show them.</span>
+  <a href="/work?kind=events" class="rounded-lg bg-green-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-800">Open my work queue</a>
+</div>
+{% endif %}
+
+<section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2">
+    {{ sev_chip(e.severity) }}
+    <span class="text-sm font-medium text-slate-600">{{ e.event_type }}</span>
+    {% if e.sector %}<span class="text-sm text-slate-400">· {{ e.sector }}</span>{% endif %}
+    {% if pending %}<span class="rounded-full bg-blue-600 px-2.5 py-0.5 text-[11px] font-semibold text-white">Needs routing</span>{% else %}<span class="rounded-full bg-green-100 px-2.5 py-0.5 text-[11px] font-semibold text-green-800">Routed</span>{% endif %}
+  </div>
+  <h2 class="mt-3 text-xl font-bold leading-snug text-slate-900">{{ e.headline }}</h2>
+  <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">{{ e.summary }}</p>
+  <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-500">
+    <span><b class="text-slate-700">Source</b> {{ e.source_name }}</span>
+    <span><b class="text-slate-700">Published</b> {{ e.published_at|ddmmm }}, {{ e.published_at[11:16] }}</span>
+    {% if e.url %}<a href="{{ e.url }}" target="_blank" rel="noopener" class="font-semibold text-blue-700 underline">Open the source</a>{% else %}<span><b class="text-slate-700">Reference</b> {{ e.source_ref }}</span>{% endif %}
+  </div>
+  {% if siblings %}
+  <div class="mt-4 rounded-lg bg-slate-50 px-4 py-3 text-xs text-slate-600"><b class="text-slate-800">Routed together with</b> (same story, so each person gets one task, not several):
+    <ul class="mt-1 list-disc pl-5">{% for s in siblings %}<li><a class="text-blue-700 hover:underline" href="/events/{{ s.id }}">{{ s.headline }}</a></li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+</section>
+
+<ol class="my-5 grid gap-3 text-sm sm:grid-cols-4">
+  {% set steps = [
+    ('Matched', (matched|length ~ ' compan' ~ ('y' if matched|length == 1 else 'ies') ~ ' found in the graph') if matched else 'No company in our graph', true),
+    ('Reached', (reach|length ~ ' client' ~ ('' if reach|length == 1 else 's') ~ ', ' ~ (exposure|cr) ~ ' outstanding') if reach else 'No client reached', true),
+    ('Routed', ((plan|length if pending else tasks|length) ~ ' task' ~ ('' if (plan|length if pending else tasks|length) == 1 else 's') ~ (' ready to create' if pending else ' created')) if (plan or tasks) else 'Nothing to route', not pending),
+    ('Recorded', 'In the work queue and the audit log' if not pending else 'Happens when you press Process', not pending)] %}
+  {% for t, d, ok in steps %}
+  <li class="rounded-xl border p-3.5 {{ 'border-green-200 bg-green-50' if ok else 'border-slate-200 bg-white' }}">
+    <div class="flex items-center gap-2 font-semibold {{ 'text-green-800' if ok else 'text-slate-700' }}">
+      <span class="flex h-5 w-5 items-center justify-center rounded-full text-[11px] {{ 'bg-green-600 text-white' if ok else 'bg-slate-200 text-slate-600' }}">{{ '✓' if ok else loop.index }}</span>{{ t }}
+    </div>
+    <div class="mt-1 text-xs leading-snug text-slate-600">{{ d }}</div>
+  </li>
+  {% endfor %}
+</ol>
+{% if matched %}<p class="-mt-2 mb-5 text-xs text-slate-500">Named in the news and found in the graph: {% for m in matched %}<span class="mr-1 rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-700">{{ m }}</span>{% endfor %}</p>{% endif %}
+
+<section class="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-100 px-6 py-4"><h3 class="font-bold text-slate-900">Who it reaches</h3><p class="text-xs text-slate-500">Clients found by following supplier, customer, ownership and lending links from the company in the news.</p></div>
+  {% if reach %}
+  <div class="overflow-x-auto"><table class="w-full text-sm">
+    <thead class="bg-slate-50 text-left text-[11px] uppercase tracking-wider text-slate-500"><tr><th class="px-6 py-2">Client</th><th class="px-3 py-2">How it reaches them</th><th class="px-3 py-2">Impact</th><th class="px-3 py-2 text-right">Outstanding</th><th class="px-6 py-2">Relationship manager</th></tr></thead>
+    <tbody class="divide-y divide-slate-100">
+    {% for x in reach %}
+    <tr class="align-top {{ 'bg-blue-50/40' if x.mine }}">
+      <td class="px-6 py-3"><a href="/clients/{{ x.group }}" class="font-semibold text-blue-800 hover:underline">{{ x.client }}</a><div class="text-[11px] text-slate-400">{{ 'Directly named' if x.hops == 0 else x.hops ~ (' step' if x.hops == 1 else ' steps') ~ ' away' }}</div></td>
+      <td class="px-3 py-3"><ol class="space-y-1 text-xs text-slate-600">{% for c in x.chain %}<li class="flex gap-1.5"><span class="text-slate-300">{{ loop.index }}.</span><span>{{ c }}</span></li>{% endfor %}</ol></td>
+      <td class="px-3 py-3">{{ sev_chip(x.impact) }}</td>
+      <td class="px-3 py-3 text-right tabular-nums text-slate-700">{{ x.exposure|cr }}</td>
+      <td class="px-6 py-3 text-slate-700">{{ x.rm_name }}{% if x.mine %} <span class="ml-1 rounded-full bg-blue-100 px-1.5 py-0.5 text-[10px] font-semibold text-blue-700">Yours</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody></table></div>
+  {% else %}<p class="px-6 py-8 text-sm text-slate-500">No client in the graph is connected to this news, so nobody needs to act.</p>{% endif %}
+</section>
+
+<section class="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-6 py-4">
+    <div><h3 class="font-bold text-slate-900">{{ 'Who will get a task' if pending else 'Who got a task' }}</h3><p class="text-xs text-slate-500">One task per person, each with the reason they are seeing it.</p></div>
+    {% if pending and can_process and plan %}
+    <form method="post" action="/events/{{ e.id }}/process" x-data="{ busy: false }" @submit="busy = true">
+      <button :disabled="busy" class="rounded-xl bg-navy-800 px-5 py-2.5 text-sm font-bold text-white shadow transition hover:bg-navy-700 disabled:opacity-60"><span x-show="!busy">Process: create {{ plan|length }} task{{ '' if plan|length == 1 else 's' }}</span><span x-show="busy" x-cloak>Routing...</span></button>
+    </form>
+    {% endif %}
+  </div>
+  {% set rows = plan if pending else tasks %}
+  {% if rows %}
+  <ul class="divide-y divide-slate-100">
+    {% for t in rows %}
+    {% set nm = t.user_name if pending else t.owner_name %}{% set role = t.user_role if pending else t.owner_role %}
+    <li class="flex gap-4 px-6 py-4">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-800 text-xs font-bold text-white">{{ (nm.split()[0][0] ~ nm.split()[-1][0])|upper }}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2"><span class="font-semibold text-slate-900">{{ nm }}</span><span class="text-xs text-slate-500">{{ role }}</span>
+          <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">{{ t.type_label }}</span>
+          {% if not pending %}{{ state_chip(t.state) }}{% if t.mine %}<a href="/work?q={{ t.id }}" class="text-[11px] font-semibold text-blue-700 underline">{{ t.id }}</a>{% endif %}{% endif %}
+        </div>
+        <div class="mt-1 text-sm text-slate-800">{{ t.title }}</div>
+        <div class="mt-1 text-xs leading-relaxed text-slate-500">{{ (t.why[0] if pending else t.why) | replace('(', '- ') | replace(')', '') | truncate(230) }}</div>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">{% for n in t.rule_names %}<span class="rounded-full bg-sky-50 px-2 py-0.5 text-[11px] text-sky-800 ring-1 ring-sky-100">{{ n }}</span>{% endfor %}
+          <span class="text-[11px] text-slate-400">{% if pending %}Due within {{ t.due_h }} hours{% else %}Due {{ t.due_at|ddmmm }}{% endif %}</span></div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="px-6 py-8 text-sm text-slate-500">No rule applies to this event, so no task is created.</p>{% endif %}
+  {% if pending and not can_process %}<p class="border-t border-slate-100 px-6 py-3 text-xs text-slate-500">Only a relationship manager or team lead can route an event.</p>{% endif %}
+</section>
+
+<details class="mb-8 rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <summary class="cursor-pointer select-none px-6 py-4 font-bold text-slate-900">How routing decides <span class="ml-1 text-xs font-normal text-slate-400">the six rules, in plain words</span></summary>
+  <ul class="divide-y divide-slate-100 border-t border-slate-100">
+    {% for r in rules %}
+    <li class="px-6 py-3 text-sm"><div class="flex items-center gap-2"><span class="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-bold text-slate-600">{{ r.id }}</span><span class="font-semibold text-slate-900">{{ r.name }}</span><span class="ml-auto text-xs text-slate-400">Due in {{ r.due_in_hours }} hours</span></div>
+      <div class="mt-0.5 text-xs text-slate-500">{{ r.applies_to }}</div></li>
+    {% endfor %}
+  </ul>
+</details>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% from "_macros.html" import watch_chip %}
+<div class="bg-white rounded-xl border border-slate-200 overflow-x-auto">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+      <tr><th class="text-left px-4 py-2.5">Client</th><th class="text-left px-3">Segment</th><th class="text-left px-3">Rating</th><th class="text-right px-3">Limit</th><th class="text-right px-3">Used</th>
+          <th class="text-center px-3">Watch</th><th class="text-left px-3">Contact</th><th class="text-center px-3">Open work</th><th class="text-center px-3">Alerts</th><th class="text-left px-3">RM</th></tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for c in rows %}
+      <tr class="hover:bg-slate-50">
+        <td class="px-4 py-2.5"><a href="/clients/{{ c.id }}" class="font-semibold text-blue-700 hover:underline">{{ c.short_name }}</a><div class="text-xs text-slate-500">{{ c.sector }}</div></td>
+        <td class="px-3 text-slate-600">{{ c.segment }}</td>
+        <td class="px-3 text-slate-600 whitespace-nowrap">{{ c.external_rating }}<div class="text-xs text-slate-400">{{ c.internal_rating }}</div></td>
+        <td class="px-3 text-right whitespace-nowrap">{{ c.sanctioned_cr|cr }}</td>
+        <td class="px-3 text-right"><span class="{{ 'text-red-600 font-semibold' if c.util >= 90 else '' }}">{{ c.util }}%</span></td>
+        <td class="px-3 text-center">{{ watch_chip(c.watch_flag) }}</td>
+        <td class="px-3 whitespace-nowrap {{ 'text-red-600 font-medium' if c.contact_late else 'text-slate-600' }}">{{ c.days_since }} days ago{% if c.contact_late %}<div class="text-xs">past {{ c.cadence_days }}-day cadence</div>{% endif %}</td>
+        <td class="px-3 text-center">{{ c.open_work or '–' }}</td>
+        <td class="px-3 text-center">{{ c.open_alerts or '–' }}</td>
+        <td class="px-3 text-slate-600 whitespace-nowrap">{{ c.rm_name }}</td>
+      </tr>
+      {% else %}<tr><td colspan="10" class="px-4 py-10 text-center text-slate-500">No clients match.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  <div class="flex items-center justify-between px-4 py-3 border-t border-slate-100 text-sm text-slate-500">
+    <span>{{ total }} client{{ 's' if total != 1 }} · page {{ page }} of {{ pages }}</span>
+    <span class="space-x-2">
+      {% set qs = 'rm=' ~ rm ~ '&segment=' ~ segment|urlencode ~ '&sector=' ~ sector|urlencode ~ '&sort=' ~ sort ~ '&q=' ~ q|urlencode %}
+      {% if page > 1 %}<a hx-get="/clients?{{ qs }}&page={{ page - 1 }}" hx-target="#clients-table" hx-push-url="true" class="cursor-pointer rounded border border-slate-300 px-3 py-1 hover:bg-slate-50">Previous</a>{% endif %}
+      {% if page < pages %}<a hx-get="/clients?{{ qs }}&page={{ page + 1 }}" hx-target="#clients-table" hx-push-url="true" class="cursor-pointer rounded border border-slate-300 px-3 py-1 hover:bg-slate-50">Next</a>{% endif %}
+    </span>
+  </div>
+</div>

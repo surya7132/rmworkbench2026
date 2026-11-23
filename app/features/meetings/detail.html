@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% from "_macros.html" import state_chip %}
+{% block title %}{{ m.title[:40] }}{% endblock %}
+{% block heading %}Meeting{% endblock %}
+{% block content %}
+<script>
+document.addEventListener('alpine:init', () => {
+  // Debrief form: follow-up rows, voice dictation (browser speech recognition) and optional AI tidy.
+  Alpine.data('debrief', () => ({
+    notes: '', rows: [], listening: false, rec: null, voiceErr: '', aiBusy: false, aiErr: '', aiUndo: null,
+    voiceOk: !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+    init() { this.notes = this.$refs.notes.value; },
+    addRow() { this.rows.push({ k: Date.now() + this.rows.length }); },
+    removeRow(i) { this.rows.splice(i, 1); },
+    toggleVoice() {
+      if (this.listening) { this.rec.stop(); return; }
+      const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const r = new R();
+      r.lang = 'en-IN'; r.continuous = true; r.interimResults = true;
+      // Words go straight into the box as they are recognised. 'base' is what was already there when dictation started.
+      const base = this.notes + (this.notes && !/\s$/.test(this.notes) ? ' ' : '');
+      r.onresult = (e) => {
+        let spoken = '';
+        for (let i = 0; i < e.results.length; i++) spoken += e.results[i][0].transcript;
+        this.notes = base + spoken.trimStart();
+        this.$nextTick(() => { this.$refs.notes.scrollTop = this.$refs.notes.scrollHeight; });
+      };
+      r.onerror = (e) => { this.voiceErr = e.error === 'not-allowed' ? 'The microphone is blocked. Allow it in the browser address bar and try again.' : 'Dictation stopped (' + e.error + '). You can type instead.'; this.listening = false; };
+      r.onend = () => { this.listening = false; };
+      this.voiceErr = ''; this.rec = r; this.listening = true; r.start();
+    },
+    async tidy() {
+      this.aiBusy = true; this.aiErr = '';
+      const fd = new FormData(); fd.append('mode', 'tidy'); fd.append('text', this.notes);
+      try {
+        const res = await fetch(this.$el.dataset.ai, { method: 'POST', body: fd });
+        const j = await res.json();
+        if (j.text) { this.aiUndo = this.notes; this.notes = j.text; } else { this.aiErr = j.error || 'Could not tidy the notes.'; }
+      } catch (e) { this.aiErr = 'Could not reach the server.'; }
+      this.aiBusy = false;
+    },
+    undo() { this.notes = this.aiUndo; this.aiUndo = null; }
+  }));
+  // Brief summary: copy, and optional AI rewrite.
+  Alpine.data('summary', () => ({
+    text: '', copied: false, busy: false, err: '', original: null,
+    init() { this.text = this.$el.dataset.text; },
+    async copy() { try { await navigator.clipboard.writeText(this.text); this.copied = true; setTimeout(() => { this.copied = false; }, 1500); } catch (e) {} },
+    async rewrite() {
+      this.busy = true; this.err = '';
+      const fd = new FormData(); fd.append('mode', 'brief'); fd.append('text', this.text);
+      try {
+        const res = await fetch(this.$el.dataset.ai, { method: 'POST', body: fd });
+        const j = await res.json();
+        if (j.text) { this.original = this.text; this.text = j.text; } else { this.err = j.error || 'Could not rewrite.'; }
+      } catch (e) { this.err = 'Could not reach the server.'; }
+      this.busy = false;
+    }
+  }));
+});
+</script>
+
+<a href="/meetings" class="mb-4 inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline">&larr; All meetings</a>
+{% if error %}<div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">{{ error }}</div>{% endif %}
+{% if saved %}<div class="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900" role="status">Prep saved.</div>{% endif %}
+{% if done %}
+<div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900" role="status">
+  <span><b>Notes saved.</b> {{ followups|length }} follow-up{{ '' if followups|length == 1 else 's' }} created in the work queue. Nothing to type twice.</span>
+  {% if followups %}<a href="/work" class="rounded-lg bg-green-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-800">Open the work queue</a>{% endif %}
+</div>
+{% endif %}
+
+<section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+  <div class="flex flex-wrap items-center gap-2 text-xs">
+    <span class="rounded-full px-2.5 py-0.5 font-semibold {{ {'scheduled':'bg-blue-100 text-blue-800','held':'bg-green-100 text-green-800','notes_pending':'bg-amber-100 text-amber-800'}[m.status] }}">{{ {'scheduled':'Upcoming','held':'Held','notes_pending':'Notes pending'}[m.status] }}</span>
+    <span class="rounded-full bg-slate-100 px-2.5 py-0.5 font-medium text-slate-600">From: {{ m.source_label }}</span>
+    {% if m.status == 'scheduled' %}<span class="rounded-full px-2.5 py-0.5 font-semibold {{ 'bg-green-100 text-green-800' if m.prep_status == 'ready' else 'bg-amber-100 text-amber-800' }}">{{ 'Prep ready' if m.prep_status == 'ready' else 'Prep incomplete' }}</span>{% endif %}
+  </div>
+  <h2 class="mt-3 text-xl font-bold text-slate-900">{{ m.title }}</h2>
+  <p class="mt-1 text-sm text-slate-600"><a class="font-semibold text-blue-800 hover:underline" href="/clients/{{ g.id }}">{{ g.short_name }}</a> · {{ m.when.strftime('%a %d %b %Y, %H:%M') }}{% if m.duration_min %} · {{ m.duration_min }} min{% endif %}{% if m.location %} · {{ m.location }}{% endif %}</p>
+  {% if m.attendees %}<div class="mt-3 flex flex-wrap gap-2">{% for a in m.attendees %}<span class="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700"><b>{{ a.name }}</b>{% if a.role %} · {{ a.role }}{% endif %}</span>{% endfor %}</div>{% endif %}
+</section>
+
+<div class="mt-5 grid gap-5 lg:grid-cols-[1fr_320px]">
+<div class="space-y-5">
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" x-data="summary" data-text="{{ summary }}" data-ai="/meetings/{{ m.id }}/ai">
+    <div class="flex items-center justify-between gap-3">
+      <h3 class="font-bold text-slate-900">In short</h3>
+      <div class="flex items-center gap-2">
+        {% if ai_on %}<button type="button" @click="rewrite()" :disabled="busy" class="rounded-lg border border-violet-300 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-800 hover:bg-violet-100 disabled:opacity-60"><span x-show="!busy">Rewrite with AI</span><span x-show="busy" x-cloak>Writing...</span></button>
+        <button type="button" x-show="original" x-cloak @click="text = original; original = null" class="text-xs text-slate-500 underline">Undo</button>{% endif %}
+        <button type="button" @click="copy()" class="rounded-lg border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"><span x-show="!copied">Copy</span><span x-show="copied" x-cloak>Copied</span></button>
+      </div>
+    </div>
+    <p class="mt-2 text-sm leading-relaxed text-slate-700" x-text="text"></p>
+    <p x-show="err" x-cloak class="mt-2 text-xs text-red-600" x-text="err"></p>
+    <p class="mt-2 text-[11px] text-slate-400">{{ 'Built from the facts below.' if not ai_on else 'Built from the facts below. The AI rewrite uses only these facts.' }}</p>
+  </section>
+
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h3 class="font-bold text-slate-900">What changed since last time</h3>
+    <p class="text-xs text-slate-500">Each line shows where it came from. Click the source to check it.</p>
+    {% if points %}
+    <ul class="mt-3 divide-y divide-slate-100">
+      {% for p in points %}
+      <li class="flex gap-3 py-3"><span class="mt-0.5 h-fit shrink-0 rounded-full bg-sky-50 px-2 py-0.5 text-[11px] font-semibold text-sky-800 ring-1 ring-sky-100">{{ p.tag }}</span>
+        <div class="min-w-0 text-sm text-slate-800">{{ p.text }}<a href="{{ p.href }}" class="ml-2 whitespace-nowrap text-[11px] font-medium text-blue-700 underline">{{ p.source }}</a>{% if p.detail %}<div class="mt-0.5 text-xs text-slate-500">{{ p.detail }}</div>{% endif %}</div></li>
+      {% endfor %}
+    </ul>
+    {% else %}<p class="mt-3 text-sm text-slate-500">Nothing new since the last meeting.</p>{% endif %}
+  </section>
+
+  {% if agenda or questions or info %}
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h3 class="font-bold text-slate-900">Plan for the meeting</h3>
+    {% if m.objective %}<p class="mt-2 text-sm text-slate-800"><b>Objective.</b> {{ m.objective }}</p>{% endif %}
+    {% if m.success_criteria %}<p class="mt-1 text-sm text-slate-800"><b>A good result looks like.</b> {{ m.success_criteria }}</p>{% endif %}
+    <div class="mt-4 grid gap-4 md:grid-cols-3">
+      {% for key, label, cls in [('must','Must cover','border-blue-200 bg-blue-50/50'),('ifTime','If there is time','border-slate-200 bg-slate-50'),('avoid','Avoid','border-red-200 bg-red-50/60')] %}
+      {% if agenda.get(key) %}<div class="rounded-xl border p-4 {{ cls }}"><div class="text-xs font-bold uppercase tracking-wider text-slate-500">{{ label }}</div><ul class="mt-2 list-disc space-y-1.5 pl-4 text-sm text-slate-800">{% for x in agenda[key] %}<li>{{ x }}</li>{% endfor %}</ul></div>{% endif %}
+      {% endfor %}
+    </div>
+    {% if questions %}
+    <h4 class="mt-5 text-xs font-bold uppercase tracking-wider text-slate-500">Questions to ask</h4>
+    <dl class="mt-2 space-y-2 text-sm">{% for theme, qs in questions.items() %}<div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-slate-700">{{ theme }}</dt><dd class="text-slate-700">{{ qs|join(' ') }}</dd></div>{% endfor %}</dl>
+    {% endif %}
+    {% if info %}<h4 class="mt-5 text-xs font-bold uppercase tracking-wider text-slate-500">Information to ask for</h4><ul class="mt-2 list-disc pl-5 text-sm text-slate-700">{% for x in info %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
+  </section>
+  {% endif %}
+
+  {% if m.status == 'scheduled' %}
+  <details class="rounded-2xl border border-slate-200 bg-white shadow-sm" {{ 'open' if error and not form else '' }}>
+    <summary class="cursor-pointer select-none px-6 py-4 font-bold text-slate-900">Edit the prep <span class="ml-1 text-xs font-normal text-slate-400">objective, agenda, what to avoid</span></summary>
+    <form method="post" action="/meetings/{{ m.id }}/prep" class="space-y-4 border-t border-slate-100 p-6">
+      <label class="block text-sm font-medium text-slate-700">Objective<textarea name="objective" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ m.objective or '' }}</textarea></label>
+      <label class="block text-sm font-medium text-slate-700">A good result looks like<textarea name="success" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ m.success_criteria or '' }}</textarea></label>
+      <div class="grid gap-4 md:grid-cols-3">
+        <label class="block text-sm font-medium text-slate-700">Must cover (one per line)<textarea name="must" rows="5" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ agenda.get('must', [])|join('\n') }}</textarea></label>
+        <label class="block text-sm font-medium text-slate-700">If there is time<textarea name="if_time" rows="5" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ agenda.get('ifTime', [])|join('\n') }}</textarea></label>
+        <label class="block text-sm font-medium text-slate-700">Avoid<textarea name="avoid" rows="5" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ agenda.get('avoid', [])|join('\n') }}</textarea></label>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Save</button>
+        <button name="ready" value="1" class="rounded-lg bg-navy-800 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Save and mark prep ready</button>
+      </div>
+    </form>
+  </details>
+  {% endif %}
+
+  {% if can_debrief %}
+  <section id="debrief" class="rounded-2xl border-2 {{ 'border-amber-300' if m.status == 'notes_pending' else 'border-slate-200' }} bg-white shadow-sm">
+    <div class="border-b border-slate-100 px-6 py-4"><h3 class="font-bold text-slate-900">After the meeting: your notes</h3><p class="text-xs text-slate-500">Type or speak. Each follow-up below becomes a task in the work queue, so you do not enter it twice.</p></div>
+    <form method="post" action="/meetings/{{ m.id }}/debrief" x-data="debrief" data-ai="/meetings/{{ m.id }}/ai" class="space-y-5 p-6">
+      <div>
+        <div class="mb-1 flex flex-wrap items-center justify-between gap-2">
+          <label for="notes" class="text-sm font-medium text-slate-700">What was discussed</label>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" x-show="voiceOk" @click="toggleVoice()" class="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition" :class="listening ? 'border-red-300 bg-red-50 text-red-700' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'">
+              <span class="h-2.5 w-2.5 rounded-full" :class="listening ? 'animate-pulse bg-red-500' : 'bg-slate-400'"></span><span x-text="listening ? 'Stop dictation' : 'Speak your notes'"></span>
+            </button>
+            {% if ai_on %}<button type="button" @click="tidy()" :disabled="aiBusy || !notes" class="rounded-full border border-violet-300 bg-violet-50 px-3.5 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-100 disabled:opacity-50"><span x-show="!aiBusy">Tidy with AI</span><span x-show="aiBusy" x-cloak>Tidying...</span></button>
+            <button type="button" x-show="aiUndo !== null" x-cloak @click="undo()" class="text-xs text-slate-500 underline">Undo</button>{% endif %}
+          </div>
+        </div>
+        <textarea id="notes" name="notes" x-ref="notes" x-model="notes" @keydown="if (listening) rec.stop()" rows="6" placeholder="Type here, or press Speak your notes and talk." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-navy-700 focus:outline-none focus:ring-4 focus:ring-blue-100">{{ form.get('notes') or '' }}</textarea>
+        <p x-show="listening" x-cloak class="mt-1 text-xs text-red-600">Listening... your words appear in the box as you speak. Press Stop dictation when you are done.</p>
+        <p x-show="voiceErr" x-cloak class="mt-1 text-xs text-red-600" x-text="voiceErr"></p>
+        <p x-show="aiErr" x-cloak class="mt-1 text-xs text-red-600" x-text="aiErr"></p>
+        <p x-show="!voiceOk" x-cloak class="mt-1 text-xs text-slate-500">Dictation needs Chrome or Edge. You can type instead.</p>
+        <p class="mt-1 text-[11px] text-slate-400">Dictation is optional. Your browser's speech service turns the voice into text, so read it over before saving.</p>
+      </div>
+      <label class="block text-sm font-medium text-slate-700">Decisions made (optional)<textarea name="decisions" rows="2" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">{{ form.get('decisions') or '' }}</textarea></label>
+
+      <div>
+        <div class="mb-2 flex items-center justify-between"><span class="text-sm font-medium text-slate-700">Follow-ups</span>
+          <button type="button" @click="addRow()" class="rounded-lg border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">+ Add a follow-up</button></div>
+        <p x-show="rows.length === 0" class="rounded-lg bg-slate-50 px-4 py-3 text-xs text-slate-500">None yet. Add one for every promise, request or next step.</p>
+        <div class="space-y-3" data-owner="{{ user.id }}" data-due="{{ default_due }}">
+          <template x-for="(r, i) in rows" :key="r.k">
+            <div class="grid gap-2 rounded-xl border border-slate-200 bg-slate-50/60 p-3 md:grid-cols-[1fr_170px_150px_150px_auto]">
+              <input name="f_title" placeholder="What needs to be done" class="rounded-lg border border-slate-300 px-3 py-2 text-sm">
+              <select name="f_kind" class="rounded-lg border border-slate-300 px-2 py-2 text-sm">{% for k, l in follow_types %}<option value="{{ k }}">{{ l }}</option>{% endfor %}</select>
+              <select name="f_owner" class="rounded-lg border border-slate-300 px-2 py-2 text-sm">{% for o in owners %}<option value="{{ o.id }}">{{ o.name }}{{ ' (me)' if o.id == user.id }}</option>{% endfor %}</select>
+              <input type="date" name="f_due" value="{{ default_due }}" class="rounded-lg border border-slate-300 px-2 py-2 text-sm">
+              <button type="button" @click="removeRow(i)" class="rounded-lg px-2 text-slate-400 hover:text-red-600" aria-label="Remove follow-up">&times;</button>
+            </div>
+          </template>
+        </div>
+      </div>
+      <button class="rounded-xl bg-navy-800 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-navy-700">Save notes and create follow-ups</button>
+    </form>
+  </section>
+  {% endif %}
+
+  {% if m.status == 'held' %}
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h3 class="font-bold text-slate-900">What was recorded</h3>
+    {% if m.outcome %}<p class="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-700">{{ m.outcome }}</p>{% else %}<p class="mt-2 text-sm text-slate-500">No notes were saved for this meeting.</p>{% endif %}
+  </section>
+  {% endif %}
+
+  {% if followups %}
+  <section class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-100 px-6 py-4"><h3 class="font-bold text-slate-900">Follow-ups from this meeting</h3></div>
+    <ul class="divide-y divide-slate-100">
+      {% for f in followups %}<li class="flex flex-wrap items-center gap-3 px-6 py-3 text-sm"><span class="font-medium text-slate-900">{{ f.title }}</span><span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">{{ f.type_label }}</span>{{ state_chip(f.state) }}<span class="ml-auto text-xs text-slate-500">{{ f.owner_name }} · due {{ f.due_at|ddmmm }}</span></li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</div>
+
+<aside class="space-y-5">
+  <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h3 class="font-bold text-slate-900">Client snapshot</h3>
+    <dl class="mt-3 space-y-2 text-sm">
+      <div class="flex justify-between"><dt class="text-slate-500">Rating</dt><dd class="font-medium text-slate-800">{{ g.external_rating }} · {{ g.rating_trend }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Sanctioned</dt><dd class="font-medium text-slate-800">{{ g.sanctioned_cr|cr }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Outstanding</dt><dd class="font-medium text-slate-800">{{ g.outstanding_cr|cr }} ({{ util }}%)</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Last contact</dt><dd class="font-medium text-slate-800">{{ g.last_contact }}</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Usual rhythm</dt><dd class="font-medium text-slate-800">Every {{ g.cadence_days }} days</dd></div>
+    </dl>
+    <a href="/clients/{{ g.id }}" class="mt-4 inline-block text-xs font-semibold text-blue-700 underline">Open the full client page</a>
+  </section>
+  {% if need %}
+  <section class="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 shadow-sm">
+    <div class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Opportunity behind this meeting</div>
+    <h3 class="mt-1 font-bold leading-snug text-slate-900">{{ need.name }}</h3>
+    <p class="mt-1 text-xs text-slate-600">{{ need.product }} · {{ need.stage }}</p>
+    {% if need.action %}<p class="mt-3 text-sm text-slate-800"><b>Next step.</b> {{ need.action }}</p>{% endif %}
+    {% if need.why %}<p class="mt-1 text-xs text-slate-600">{{ need.why }}</p>{% endif %}
+  </section>
+  {% endif %}
+</aside>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Compass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>tailwind.config = {theme: {extend: {colors: {navy: {950: '#071428', 900: '#0b1d3a', 800: '#12294d', 700: '#1d3f77'}}, fontFamily: {sans: ['Inter', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif']}}}}</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+  <style>
+    .brand-bg{background:radial-gradient(900px 500px at 15% 0%,rgba(45,212,191,.16),transparent 60%),radial-gradient(700px 500px at 100% 100%,rgba(59,130,246,.22),transparent 60%),linear-gradient(160deg,#071428 0%,#0b1d3a 55%,#12294d 100%)}
+    .grid-fade{background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 30% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 30% 40%,#000 20%,transparent 75%)}
+    @keyframes needle{0%{transform:rotate(18deg)}55%{transform:rotate(58deg)}75%{transform:rotate(38deg)}100%{transform:rotate(45deg)}}
+    .needle{transform-origin:32px 32px;animation:needle 2.4s cubic-bezier(.3,1.4,.5,1) .2s both}
+    @media (prefers-reduced-motion:reduce){.needle{animation:none;transform:rotate(45deg)}}
+  </style>
+</head>
+{% set hints = {'rohan.rm': 'Owns 38 clients', 'karan.rm': 'Owns 28 clients', 'meera.lead': 'Team view across all 132 clients', 'ananya.credit': 'Reviews credit requests', 'kavita.trade': 'Trade finance specialist'} %}
+<body class="font-sans antialiased text-slate-800 bg-slate-50">
+<div class="min-h-screen grid lg:grid-cols-[1.05fr_1fr]"
+     x-data="{u:'', p:'', show:false, caps:false, busy:false, picked:'', pick(n,v){this.u=n;this.p='Demo@2026';this.picked=n;this.$nextTick(()=>this.$refs.go.focus())}}">
+
+  <!-- Brand panel -->
+  <section class="brand-bg relative overflow-hidden text-white px-8 sm:px-12 lg:px-16 py-10 lg:py-14 flex flex-col">
+    <div class="grid-fade absolute inset-0 pointer-events-none"></div>
+    <div class="relative flex items-center gap-3">
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="29" stroke="#5eead4" stroke-width="3"/>
+        <g stroke="#5eead4" stroke-width="3" stroke-linecap="round"><path d="M32 5v6M32 53v6M5 32h6M53 32h6"/></g>
+        <g class="needle"><path d="M32 12l7 20-7 20-7-20z" fill="#fff"/><path d="M32 12l7 20H25z" fill="#5eead4"/></g>
+        <circle cx="32" cy="32" r="3" fill="#0b1d3a"/>
+      </svg>
+      <div><div class="text-2xl font-extrabold tracking-tight leading-none">Compass</div>
+      <div class="text-[11px] uppercase tracking-[.18em] text-teal-300/90 mt-1">RM workbench</div></div>
+    </div>
+
+    <div class="relative my-auto py-10 lg:py-0 max-w-2xl">
+      <h1 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold leading-[1.1] tracking-tight">One workbench for the <span class="text-teal-300">whole client relationship.</span></h1>
+      <p class="mt-5 text-slate-300 text-base leading-relaxed max-w-xl">Compass brings the evidence, the conversations and the follow-ups into one client context, so relationship managers spend their time on judgment and on the client, not on assembling information.</p>
+
+      <div class="mt-8 grid sm:grid-cols-2 gap-3">
+        {% set icons = {
+          'doc': '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
+          'cal': '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+          'clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+          'bell': '<path d="M6 16v-5a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/>'} %}
+        {% for ic, t, d in [('doc', 'Financial spreading', 'Numbers extracted from annual reports and checked. You confirm every value.'),
+                            ('cal', 'Meetings', 'Coverage plan, one-page brief and a voice debrief that routes the actions.'),
+                            ('clock', 'Pending with others', 'Every request has an owner, ageing and a client deadline, with gradual escalation.'),
+                            ('bell', 'Early warnings', 'Alerts tiered by materiality, duplicates merged, standard outcomes.')] %}
+        <div class="rounded-xl bg-white/[.06] ring-1 ring-white/10 p-4">
+          <div class="flex items-center gap-2.5">
+            <svg class="h-5 w-5 text-teal-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{{ icons[ic]|safe }}</svg>
+            <span class="font-semibold text-[15px]">{{ t }}</span>
+          </div>
+          <p class="mt-1.5 text-[13px] leading-relaxed text-slate-400">{{ d }}</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-5 flex flex-wrap gap-2 text-xs">
+        {% for c in ['One client context', 'One work queue', 'Source-linked evidence'] %}
+        <span class="rounded-full bg-teal-400/10 ring-1 ring-teal-300/30 text-teal-200 px-3 py-1 font-medium">{{ c }}</span>
+        {% endfor %}
+      </div>
+      <p class="mt-6 text-sm text-slate-300"><span class="font-semibold text-white">You review and decide.</span> Compass assembles, prioritises and tracks.</p>
+    </div>
+
+    <div class="relative text-xs text-slate-400">Built by Mu Sigma</div>
+  </section>
+
+  <!-- Sign-in panel -->
+  <section class="flex items-center justify-center px-6 sm:px-10 py-10">
+    <div class="w-full max-w-md">
+      <h2 class="text-2xl font-bold tracking-tight text-slate-900">Welcome back</h2>
+      <p class="text-sm text-slate-500 mt-1">Sign in to your workbench.</p>
+
+      {% if error %}<div role="alert" class="mt-5 flex gap-2 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm px-3.5 py-2.5"><span aria-hidden="true">⚠</span><span>{{ error }}</span></div>{% endif %}
+
+      <form method="post" action="/login" class="mt-6 space-y-4" @submit="busy = true">
+        <div>
+          <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
+          <input id="username" name="username" x-model="u" autocomplete="username" autofocus required placeholder="e.g. rohan.rm"
+                 class="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm shadow-sm placeholder:text-slate-400 focus:border-navy-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+          <div class="relative mt-1.5">
+            <input id="password" name="password" x-model="p" :type="show ? 'text' : 'password'" autocomplete="current-password" required
+                   @keyup="caps = $event.getModifierState && $event.getModifierState('CapsLock')" @blur="caps = false"
+                   class="w-full rounded-lg border border-slate-300 bg-white pl-3.5 pr-16 py-2.5 text-sm shadow-sm focus:border-navy-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 px-3.5 text-xs font-semibold text-slate-500 hover:text-slate-800" x-text="show ? 'Hide' : 'Show'" aria-label="Show or hide password">Show</button>
+          </div>
+          <p x-show="caps" x-cloak class="mt-1.5 text-xs text-amber-700">Caps Lock is on.</p>
+        </div>
+        <button x-ref="go" :disabled="busy" class="w-full rounded-lg bg-navy-800 hover:bg-navy-700 disabled:opacity-70 text-white font-semibold py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-4 focus:ring-blue-200"
+                :class="picked && !busy ? 'ring-4 ring-teal-200' : ''">
+          <span x-show="!busy">Sign in</span><span x-show="busy" x-cloak>Signing in…</span>
+        </button>
+      </form>
+
+      <div class="my-7 flex items-center gap-3 text-xs uppercase tracking-wider text-slate-400"><span class="h-px flex-1 bg-slate-200"></span>Demo accounts<span class="h-px flex-1 bg-slate-200"></span></div>
+
+      <div class="space-y-2">
+        {% for d in demo %}
+        {% set ini = d['name'].split()[0][0] ~ d['name'].split()[-1][0] %}
+        <button type="button" @click="pick('{{ d['username'] }}')"
+                class="group w-full flex items-center gap-3 rounded-xl border bg-white px-3.5 py-2.5 text-left transition hover:border-navy-700 hover:shadow-sm"
+                :class="picked === '{{ d['username'] }}' ? 'border-navy-700 ring-2 ring-blue-100' : 'border-slate-200'">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-800 text-white text-xs font-bold">{{ ini }}</span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-sm font-semibold text-slate-900 leading-tight">{{ d['name'] }} <span class="ml-1 text-[11px] font-medium text-slate-500">{{ d['role'] }}</span></span>
+            <span class="block text-xs text-slate-500 truncate">{{ hints.get(d['username'], '') }}</span>
+          </span>
+          <span class="text-xs font-semibold text-navy-700 opacity-0 group-hover:opacity-100 transition" :class="picked === '{{ d['username'] }}' ? '!opacity-100' : ''" x-text="picked === '{{ d['username'] }}' ? 'Filled ✓' : 'Use'"></span>
+        </button>
+        {% endfor %}
+      </div>
+      <p class="mt-4 text-xs text-slate-400">All accounts are synthetic. Shared password: <span class="font-mono text-slate-500">Demo@2026</span></p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

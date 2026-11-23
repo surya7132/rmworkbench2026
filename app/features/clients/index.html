@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Clients{% endblock %}
+{% block heading %}Clients{% endblock %}
+{% block content %}
+<form id="cf" class="bg-white rounded-xl border border-slate-200 p-4 mb-5 flex flex-wrap items-center gap-3"
+      hx-get="/clients" hx-target="#clients-table" hx-trigger="change, keyup changed delay:300ms from:#cq" hx-push-url="true">
+  <select name="rm" class="rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+    <option value="mine" {{ 'selected' if rm == 'mine' }}>My clients</option><option value="all" {{ 'selected' if rm == 'all' }}>All relationship managers</option>
+    {% for r in f.rms %}{% if r['id'] != user['id'] %}<option value="{{ r['id'] }}" {{ 'selected' if rm == r['id'] }}>{{ r['name'] }}</option>{% endif %}{% endfor %}
+  </select>
+  <select name="segment" class="rounded-md border border-slate-300 px-2 py-1.5 text-sm"><option value="">All segments</option>{% for s in f.segments %}<option {{ 'selected' if segment == s }}>{{ s }}</option>{% endfor %}</select>
+  <select name="sector" class="rounded-md border border-slate-300 px-2 py-1.5 text-sm"><option value="">All sectors</option>{% for s in f.sectors %}<option {{ 'selected' if sector == s }}>{{ s }}</option>{% endfor %}</select>
+  <select name="sort" class="rounded-md border border-slate-300 px-2 py-1.5 text-sm">{% for k, (l, _) in sorts.items() %}<option value="{{ k }}" {{ 'selected' if sort == k }}>Sort: {{ l }}</option>{% endfor %}</select>
+  <input id="cq" name="q" value="{{ q }}" placeholder="Search client name" class="flex-1 min-w-[180px] rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+</form>
+<div id="clients-table">{% include "clients/_table.html" %}</div>
+{% endblock %}

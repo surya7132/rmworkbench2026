@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Early warnings{% endblock %}
+{% block heading %}Early warnings{% endblock %}
+{% block content %}
+<script>
+document.addEventListener('alpine:init', () => { Alpine.data('afilters', (state, prio) => ({ state, prio })); });
+</script>
+
+<form id="afilters" x-data="afilters('{{ state }}', '{{ prio }}')" hx-get="/alerts" hx-target="#alerts-list" hx-trigger="change, keyup changed delay:300ms from:#q" hx-push-url="true">
+  <div id="alert-tiles" class="mb-5" hx-get="/alerts/tiles" hx-trigger="alerts-changed from:body" hx-target="this" hx-push-url="false" hx-swap="innerHTML">
+    {% include "alerts/_tiles.html" %}
+  </div>
+
+  <div class="mb-5 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-4">
+    <div class="inline-flex flex-wrap overflow-hidden rounded-md border border-slate-300 text-sm">
+      {% for v, l in states %}
+      <label data-v="{{ v }}" class="cursor-pointer border-r border-slate-200 px-3 py-1.5 last:border-r-0" :class="state === $el.dataset.v ? 'bg-blue-50 font-semibold text-blue-800' : 'bg-white hover:bg-slate-50'"><input type="radio" name="state" value="{{ v }}" x-model="state" class="sr-only" {{ 'checked' if state == v }}> {{ l }}</label>
+      {% endfor %}
+    </div>
+    <select name="category" class="rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+      <option value="">All types</option>
+      {% for c in categories %}<option value="{{ c }}" {{ 'selected' if category == c }}>{{ c }}</option>{% endfor %}
+    </select>
+    <input id="q" name="q" value="{{ q }}" placeholder="Search client, warning or code" class="min-w-[200px] flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+  </div>
+</form>
+
+<div id="alerts-list">{% include "alerts/_list.html" %}</div>
+{% endblock %}

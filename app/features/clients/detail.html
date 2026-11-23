@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+{% from "_macros.html" import state_chip, watch_chip %}
+{% block title %}{{ g.short_name }}{% endblock %}
+{% block heading %}Client{% endblock %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<script src="/static/js/relmap.js"></script>
+<script>
+let mapCtl = null;   // kept outside Alpine: Alpine's reactive wrapper breaks Cytoscape
+document.addEventListener('alpine:init', () => {
+  Alpine.data('clientPage', () => ({
+    tab: 'overview', selected: null, mapError: false, summary: null, q: '', hits: null,
+    show: { person: true, counterparty: true, sector: true, need: true },
+    kindName: { own: 'Group company', counterparty: 'Outside company', person: 'Person', sector: 'Sector', need: 'Opportunity', group: 'Client group' },
+    init() {
+      const h = location.hash.slice(1);
+      if (h && document.getElementById('panel-' + h)) this.tab = h;
+      this.$watch('tab', (t) => {
+        history.replaceState(null, '', '#' + t);
+        if (t === 'map') this.$nextTick(() => this.drawMap());
+      });
+      if (this.tab === 'map') this.$nextTick(() => this.drawMap());
+    },
+    drawMap() {
+      if (mapCtl) { mapCtl.resize(); return; }
+      if (!window.cytoscape || !window.RelMap) { this.mapError = true; return; }
+      const data = JSON.parse(document.getElementById('graph-data').textContent);
+      mapCtl = window.RelMap.mount(this.$refs.cy, data, { onSelect: (info) => { this.selected = info; } });
+      this.summary = mapCtl.summary;
+    },
+    fit() { if (mapCtl) mapCtl.fit(); },
+    zoom(f) { if (mapCtl) mapCtl.zoom(f); },
+    toggle(kind) { if (mapCtl) mapCtl.setVisible(kind, this.show[kind]); },
+    search() { this.hits = mapCtl ? mapCtl.search(this.q) : null; },
+    pick(id) { if (mapCtl) mapCtl.select(id); },
+    save() { if (mapCtl) mapCtl.png(this.$refs.cy.dataset.name); }
+  }));
+});
+</script>
+
+{% set due_cls = {'overdue':'bg-red-100 text-red-700','today':'bg-amber-100 text-amber-800','week':'bg-blue-50 text-blue-700','later':'bg-slate-100 text-slate-600','done':'bg-slate-100 text-slate-500'} %}
+{% set sev_cls = {'High':'bg-red-100 text-red-700','Medium':'bg-amber-100 text-amber-800','Low':'bg-slate-100 text-slate-600'} %}
+
+<div x-data="clientPage()">
+  <a href="/clients" class="text-sm text-slate-500 hover:text-slate-800">← All clients</a>
+
+  <!-- Header -->
+  <section class="mt-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="flex flex-wrap items-start justify-between gap-6">
+      <div class="min-w-0">
+        <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">{{ g.name }}</h2>
+        <p class="mt-1 text-sm text-slate-500">{{ g.sector }} · {{ g.segment }} · Tier {{ g.tier }} · Client since {{ g.relationship_since }} · RM {{ g.rm_name }}</p>
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          {% if g.watch_flag and g.watch_flag != 'None' %}<span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-1 font-semibold text-orange-800 ring-1 ring-orange-200">On watch {{ watch_chip(g.watch_flag) }}</span>{% endif %}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-700">{{ g.external_rating }}</span>
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-700">Internal {{ g.internal_rating }}{% if g.rating_trend == 'up' %} ▲{% elif g.rating_trend == 'down' %} ▼{% endif %}</span>
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-700">Account activity: {{ g.flow_level }}</span>
+        </div>
+      </div>
+      <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Sanctioned</dt><dd class="text-lg font-bold text-slate-900">{{ g.sanctioned_cr|cr }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Outstanding</dt><dd class="text-lg font-bold text-slate-900">{{ g.outstanding_cr|cr }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Deposits</dt><dd class="text-lg font-bold text-slate-900">{{ g.deposits_cr|cr }}</dd></div>
+        <div class="min-w-[110px]"><dt class="text-xs text-slate-500">Utilisation</dt>
+          <dd class="text-lg font-bold {{ 'text-red-600' if g.util >= 90 else ('text-amber-600' if g.util >= 75 else 'text-slate-900') }}">{{ g.util }}%</dd>
+          <div class="mt-1 h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full w-0 rounded-full transition-all duration-700 {{ 'bg-red-500' if g.util >= 90 else ('bg-amber-500' if g.util >= 75 else 'bg-blue-500') }}" data-w="{{ g.util }}" x-init="$nextTick(() => $el.style.width = $el.dataset.w + '%')"></div></div>
+        </div>
+      </dl>
+    </div>
+    <div class="mt-5 grid gap-3 border-t border-slate-100 pt-4 text-sm sm:grid-cols-3">
+      <div><span class="text-slate-500">Last contact</span> <span class="font-semibold {{ 'text-red-600' if g.contact_late else 'text-slate-900' }}">{{ g.days_since }} days ago</span>{% if g.contact_late %} <span class="text-xs text-red-600">(past the {{ g.cadence_days }}-day cadence)</span>{% else %} <span class="text-xs text-slate-400">(cadence {{ g.cadence_days }} days)</span>{% endif %}</div>
+      <div><span class="text-slate-500">Annual review due</span> <span class="font-semibold text-slate-900">{{ g.review_due|ddmmm }}</span></div>
+      <div><span class="text-slate-500">Open work</span> <span class="font-semibold text-slate-900">{{ work|length }}</span> <span class="text-slate-400">·</span> <span class="text-slate-500">Open alerts</span> <span class="font-semibold text-slate-900">{{ open_alerts|length }}</span></div>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  {% set tabs = [('overview','Overview',None),('facilities','Facilities',facilities|length),('evidence','Evidence',facts|length),('needs','Needs',needs|length),('people','People',people|length),('meetings','Meetings',meetings|length),('news','Market news',news|length),('map','Relationship map',None)] %}
+  <nav class="mt-6 flex gap-1 overflow-x-auto overflow-y-hidden border-b border-slate-200" role="tablist">
+    {% for key, label, n in tabs %}
+    <button type="button" role="tab" data-k="{{ key }}" @click="tab = $el.dataset.k" :aria-selected="tab === $el.dataset.k"
+            class="-mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition"
+            :class="tab === $el.dataset.k ? 'border-navy-700 text-navy-800' : 'border-transparent text-slate-500 hover:text-slate-800'">
+      {{ label }}{% if n is not none %} <span class="ml-1 rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">{{ n }}</span>{% endif %}
+    </button>
+    {% endfor %}
+  </nav>
+
+  <!-- Overview -->
+  <div id="panel-overview" x-show="tab === 'overview'" class="mt-6 grid gap-6 lg:grid-cols-3">
+    <div class="space-y-6 lg:col-span-2">
+      <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="mb-3 flex items-center justify-between"><h3 class="font-bold text-slate-900">Open work</h3>{% if mine_work %}<a href="/work?client={{ g.id }}" class="text-xs font-medium text-blue-700 hover:underline">Open in my work queue</a>{% endif %}</div>
+        {% for w in work %}
+        <div class="flex items-start justify-between gap-4 border-t border-slate-100 py-2.5 first:border-t-0">
+          <div class="min-w-0"><div class="text-sm font-medium text-slate-900">{{ w.title }}</div><div class="text-xs text-slate-500">{{ w.type_label }} · {{ w.id }} · {{ w.owner_name }}</div></div>
+          <div class="shrink-0 text-right space-y-1"><div><span class="rounded-md px-2 py-0.5 text-xs font-semibold {{ due_cls[w.due.bucket] }}">{{ w.due.label }}</span></div><div>{{ state_chip(w.state) }}</div></div>
+        </div>
+        {% else %}<p class="text-sm text-slate-500">Nothing open for this client.</p>{% endfor %}
+      </section>
+      <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 class="mb-3 font-bold text-slate-900">Early warnings</h3>
+        {% for a in alerts %}
+        <div class="border-t border-slate-100 py-3 first:border-t-0">
+          <div class="flex flex-wrap items-center gap-2"><span class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ sev_cls[a.severity] }}">{{ a.severity }}</span>
+            <span class="text-sm font-semibold text-slate-900">{{ a.title }}</span><span class="text-xs text-slate-500">{{ a.state }} · detected {{ a.detected_at|ddmmm }} · exposure {{ a.exposure_cr|cr }}</span></div>
+          {% if a.context %}<p class="mt-1 text-sm text-slate-600">{{ a.context }}</p>{% endif %}
+          {% if a.required_action %}<p class="mt-1 text-xs text-slate-500">Required: {{ a.required_action }}</p>{% endif %}
+        </div>
+        {% else %}<p class="text-sm text-slate-500">No alerts for this client.</p>{% endfor %}
+      </section>
+    </div>
+    <div class="space-y-6">
+      <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="mb-3 flex items-center justify-between"><h3 class="font-bold text-slate-900">In the news</h3><button type="button" @click="tab = 'news'" class="text-xs font-medium text-blue-700 hover:underline">All {{ news|length }}</button></div>
+        {% for n in news[:3] %}
+        <div class="border-t border-slate-100 py-2.5 first:border-t-0">
+          <div class="mb-1 flex items-center gap-2"><span class="text-[11px] text-slate-400">{{ n.published_at|ddmmm }}</span></div>
+          <div class="text-sm font-medium leading-snug text-slate-900">{{ n.headline }}</div>
+        </div>
+        {% else %}<p class="text-sm text-slate-500">No news reaches this client yet.</p>{% endfor %}
+      </section>
+      <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 class="mb-3 font-bold text-slate-900">Documents on file</h3>
+        {% for d in documents %}<div class="border-t border-slate-100 py-2 text-sm first:border-t-0"><div class="font-medium text-slate-900">{{ d.name }}</div><div class="text-xs text-slate-500">{{ d.doc_type }}{% if d.fiscal_year %} · {{ d.fiscal_year }}{% endif %} · {{ d.status }}</div></div>
+        {% else %}<p class="text-sm text-slate-500">No documents on file.</p>{% endfor %}
+      </section>
+    </div>
+  </div>
+
+  <!-- Facilities -->
+  <div id="panel-facilities" x-show="tab === 'facilities'" x-cloak class="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-2.5 text-left">Facility</th><th class="px-3 text-right">Sanctioned</th><th class="px-3 text-right">Outstanding</th><th class="px-3 text-left">Used</th><th class="px-3 text-left">Pricing</th><th class="px-3 text-left">Maturity</th><th class="px-3 text-left">Review</th><th class="px-3 text-left">Status</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+      {% for f in facilities %}
+        <tr class="align-top">
+          <td class="px-4 py-3"><div class="font-semibold text-slate-900">{{ f.facility_type }}</div><div class="text-xs text-slate-500">{{ f.account_ref or '' }}</div>
+            {% if f.security or f.coverage or f.covenants %}<div class="mt-1 max-w-xs space-y-0.5 text-xs text-slate-500">{% if f.security %}<div>Security: {{ f.security }}</div>{% endif %}{% if f.coverage %}<div>Cover: {{ f.coverage }}</div>{% endif %}{% if f.covenants %}<div>Covenants: {{ f.covenants }}</div>{% endif %}</div>{% endif %}</td>
+          <td class="px-3 py-3 text-right whitespace-nowrap">{{ f.sanctioned_cr|cr }}</td><td class="px-3 py-3 text-right whitespace-nowrap">{{ f.outstanding_cr|cr }}</td>
+          <td class="px-3 py-3"><div class="w-24"><div class="text-xs {{ 'text-red-600 font-semibold' if f.util >= 90 else 'text-slate-600' }}">{{ f.util }}%</div><div class="mt-1 h-1.5 overflow-hidden rounded-full bg-slate-100"><div class="h-full w-0 rounded-full transition-all duration-700 {{ 'bg-red-500' if f.util >= 90 else 'bg-blue-500' }}" data-w="{{ f.util }}" x-init="$nextTick(() => $el.style.width = $el.dataset.w + '%')"></div></div></div></td>
+          <td class="px-3 py-3 text-slate-600">{{ f.pricing or '–' }}</td><td class="px-3 py-3 whitespace-nowrap text-slate-600">{{ f.maturity|ddmmm if f.maturity else '–' }}</td>
+          <td class="px-3 py-3 whitespace-nowrap text-slate-600">{{ f.review_date|ddmmm if f.review_date else '–' }}</td>
+          <td class="px-3 py-3"><span class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ 'bg-green-100 text-green-800' if f.status == 'Standard' else 'bg-amber-100 text-amber-800' }}">{{ f.status }}</span></td>
+        </tr>
+      {% else %}<tr><td colspan="8" class="px-4 py-10 text-center text-slate-500">No facilities recorded.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Evidence -->
+  <div id="panel-evidence" x-show="tab === 'evidence'" x-cloak x-data="{ lab: 'all', q: '' }" class="mt-6">
+    <div class="mb-4 flex flex-wrap items-center gap-2">
+      <button type="button" @click="lab = 'all'" class="rounded-full border px-3 py-1 text-xs font-medium" :class="lab === 'all' ? 'border-navy-700 bg-navy-800 text-white' : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50'">All</button>
+      {% for k in labels_present %}<button type="button" data-k="{{ k }}" @click="lab = $el.dataset.k" class="rounded-full border px-3 py-1 text-xs font-medium" :class="lab === $el.dataset.k ? 'border-navy-700 bg-navy-800 text-white' : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50'">{{ labels[k] }}</button>{% endfor %}
+      <input x-model="q" placeholder="Search evidence" class="ml-auto w-56 rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+    </div>
+    <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-2.5 text-left">Statement</th><th class="px-3 text-left">Type</th><th class="px-3 text-left">Source</th><th class="px-3 text-left">Date</th><th class="px-3 text-left">Sharing</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+        {% for f in facts %}
+          <tr class="align-top {{ 'opacity-60' if f.superseded }}" data-l="{{ f.evidence_label }}" data-t="{{ (f.statement ~ ' ' ~ f.source_name)|lower }}" x-show="(lab === 'all' || lab === $el.dataset.l) && $el.dataset.t.includes(q.toLowerCase())">
+            <td class="px-4 py-3 text-slate-900 {{ 'line-through' if f.superseded }}">{{ f.statement }}{% if f.superseded %} <span class="no-underline rounded bg-slate-200 px-1.5 text-[10px] font-semibold text-slate-600">Superseded</span>{% endif %}{% if f.match_confidence < 1 %}<div class="text-[11px] text-amber-700">Entity match {{ (f.match_confidence * 100)|round|int }}%</div>{% endif %}</td>
+            <td class="px-3 py-3 whitespace-nowrap"><span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700">{{ f.label_name }}</span></td>
+            <td class="px-3 py-3 text-slate-600">{% if f.link %}<a href="{{ f.link }}" target="_blank" rel="noopener" class="text-blue-700 underline">{{ f.source_name }}</a>{% else %}{{ f.source_name }}{% endif %}</td>
+            <td class="px-3 py-3 whitespace-nowrap text-slate-600">{{ f.source_date|ddmmm }}</td>
+            <td class="px-3 py-3 whitespace-nowrap"><span title="{{ f.share_hint }}" class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ 'bg-green-100 text-green-800' if f.shareability == 'confirmed' else ('bg-sky-100 text-sky-800' if f.shareability == 'discuss' else 'bg-slate-100 text-slate-600') }}">{{ f.share_name }}</span></td>
+          </tr>
+        {% else %}<tr><td colspan="5" class="px-4 py-10 text-center text-slate-500">No evidence recorded.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Needs -->
+  <div id="panel-needs" x-show="tab === 'needs'" x-cloak class="mt-6 space-y-4">
+    {% for n in needs %}
+    <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" x-data="{ open: false }">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div><h3 class="font-bold text-slate-900">{{ n.name }}</h3><p class="text-xs text-slate-500">{{ n.product }} · {{ n.product_family }}</p></div>
+        <div class="flex items-center gap-2 text-xs"><span class="rounded-full bg-indigo-100 px-2.5 py-1 font-semibold text-indigo-800">{{ n.stage }}</span><span class="rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-700">{{ n.need_status }}</span></div>
+      </div>
+      <p class="mt-3 text-sm text-slate-700">{{ n.description }}</p>
+      <dl class="mt-3 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
+        <div><dt class="text-xs text-slate-500">Where it came from</dt><dd class="text-slate-800">{{ n.origin }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Timeline</dt><dd class="text-slate-800">{{ n.timeline or '–' }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Current provider</dt><dd class="text-slate-800">{{ n.incumbent or '–' }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Yearly revenue to the bank</dt><dd class="font-semibold text-slate-900">{% if n.value_lo_cr is not none %}{{ n.value_lo_cr|cr }} to {{ n.value_hi_cr|cr }}{% else %}–{% endif %}</dd>{% if n.value_basis %}<dd class="text-[11px] text-slate-400">{{ n.value_basis }}</dd>{% endif %}</div>
+        <div><dt class="text-xs text-slate-500">Client contact</dt><dd class="text-slate-800">{{ n.stakeholder_name or '–' }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Specialist</dt><dd class="text-slate-800">{{ n.specialist_name or 'Not assigned' }}</dd></div>
+        <div><dt class="text-xs text-slate-500">Credit reviewer</dt><dd class="text-slate-800">{{ n.reviewer_name or '–' }}</dd></div>
+      </dl>
+      {% if n.facts %}
+      <button type="button" @click="open = !open" class="mt-3 text-xs font-medium text-blue-700 hover:underline"><span x-show="!open">Show the evidence behind this ({{ n.facts|length }})</span><span x-show="open" x-cloak>Hide the evidence behind this</span></button>
+      <ul x-show="open" x-cloak class="mt-2 space-y-1.5 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
+        {% for f in n.facts %}<li>{{ f.statement }} <span class="text-xs text-slate-400">· {% if f.link %}<a href="{{ f.link }}" target="_blank" rel="noopener" class="text-blue-700 underline">{{ f.source_name }}</a>{% else %}{{ f.source_name }}{% endif %}, {{ f.source_date|ddmmm }}</span></li>{% endfor %}
+      </ul>
+      {% endif %}
+    </article>
+    {% else %}<div class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">No needs have been identified for this client yet.</div>{% endfor %}
+  </div>
+
+  <!-- People -->
+  <div id="panel-people" x-show="tab === 'people'" x-cloak class="mt-6 space-y-6">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {% for p in people %}
+      <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">{{ p.name.split()[0][0] }}{{ p.name.split()[-1][0] }}</span>
+          <div><div class="font-semibold text-slate-900">{{ p.name }}</div><div class="text-xs text-slate-500">{{ p.attrs.get('role', '') }}</div></div></div>
+        {% set s = p.attrs.get('stakeholder') %}
+        {% if s %}<div class="mt-3 flex flex-wrap gap-1.5 text-[11px]"><span class="rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-700">Relationship: {{ s.strength }}</span><span class="rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-700">Influence: {{ s.influence }}</span><span class="rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-700">Best reached by {{ s.channel|lower }}</span></div>{% endif %}
+      </article>
+      {% else %}<div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">No people recorded.</div>{% endfor %}
+    </div>
+    <section class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <h3 class="px-5 pt-4 font-bold text-slate-900">Companies in the group</h3>
+      <table class="mt-2 min-w-full text-sm">
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-2.5 text-left">Company</th><th class="px-3 text-left">Role</th><th class="px-3 text-left">Type</th><th class="px-3 text-left">CIN</th><th class="px-3 text-left">Registered office</th><th class="px-3 text-left">Status</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+        {% for e in entities %}<tr><td class="px-5 py-2.5 font-medium text-slate-900">{{ e.attrs.get('legal_name') or e.name }}</td><td class="px-3 text-slate-600">{{ e.attrs.get('role', '–') }}</td><td class="px-3 text-slate-600">{{ e.attrs.get('entity_kind', '–') }}</td><td class="px-3 font-mono text-xs text-slate-600">{{ e.attrs.get('cin', '–') }}</td><td class="px-3 text-slate-600">{{ e.attrs.get('registered_office', '–') }}</td><td class="px-3 text-slate-600">{{ e.attrs.get('status', '–') }}</td></tr>
+        {% else %}<tr><td colspan="6" class="px-5 py-8 text-center text-slate-500">No companies recorded.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- Meetings -->
+  <div id="panel-meetings" x-show="tab === 'meetings'" x-cloak class="mt-6 space-y-3">
+    {% for m in meetings %}
+    <article class="rounded-2xl border bg-white p-5 shadow-sm {{ 'border-blue-200' if m.upcoming else 'border-slate-200' }}">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div><div class="flex items-center gap-2"><h3 class="font-bold text-slate-900"><a href="/meetings/{{ m.id }}" class="hover:text-blue-800 hover:underline">{{ m.title }}</a></h3>{% if m.upcoming %}<span class="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-800">Upcoming</span>{% endif %}</div>
+          <p class="text-xs text-slate-500">{{ m.meeting_type|capitalize }} · {{ m.when.strftime('%d %b %Y, %H:%M') }}{% if m.duration_min %} · {{ m.duration_min }} min{% endif %}{% if m.location %} · {{ m.location }}{% endif %}</p></div>
+        <span class="rounded-full px-2.5 py-1 text-[11px] font-semibold {{ {'scheduled':'bg-blue-100 text-blue-800','held':'bg-green-100 text-green-800','notes_pending':'bg-amber-100 text-amber-800','cancelled':'bg-slate-200 text-slate-500'}[m.status] }}">{{ {'scheduled':'Scheduled','held':'Held','notes_pending':'Notes pending','cancelled':'Cancelled'}[m.status] }}</span>
+      </div>
+      {% if m.attendees %}<p class="mt-2 text-sm text-slate-600">With {{ m.attendees|join(', ') }}</p>{% endif %}
+      {% if m.objective %}<p class="mt-2 text-sm text-slate-700"><span class="font-medium">Objective:</span> {{ m.objective }}</p>{% endif %}
+      {% if m.outcome %}<p class="mt-1 text-sm text-slate-700"><span class="font-medium">Outcome:</span> {{ m.outcome }}</p>{% endif %}
+    </article>
+    {% else %}<div class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">No meetings recorded.</div>{% endfor %}
+  </div>
+
+  <!-- Market news -->
+  <div id="panel-news" x-show="tab === 'news'" x-cloak class="mt-6 space-y-3">
+    <p class="text-sm text-slate-500">Events that reach this client through its companies, suppliers, customers or sector.</p>
+    {% for n in news %}
+    <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="rounded-full px-2 py-0.5 font-semibold {{ sev_cls[n.impact_level] }}">{{ n.impact_level }} impact</span>
+        <span class="text-slate-500">{{ n.event_type }} · {{ n.published_at|ddmmm }}</span>
+      </div>
+      <h3 class="mt-2 font-semibold text-slate-900">{{ n.headline }}</h3>
+      <p class="mt-1 text-sm text-slate-600">{{ n.summary }}</p>
+      <p class="mt-1 text-xs text-slate-500">Source: {% if n.real %}<a href="{{ n.source_ref }}" target="_blank" rel="noopener" class="text-blue-700 underline">{{ n.source_name }}</a>{% else %}{{ n.source_name }}{% endif %}</p>
+      <div class="mt-3 rounded-lg bg-teal-50 p-3" x-data="{ open: false }">
+        <button type="button" @click="open = !open" class="text-xs font-semibold text-teal-800"><span x-show="!open">How does this reach this client? ({{ n.hops }} step{{ 's' if n.hops != 1 }})</span><span x-show="open" x-cloak>Hide how it reaches this client</span></button>
+        <ol x-show="open" x-cloak class="mt-2 space-y-1 border-l-2 border-teal-300 pl-3 text-sm text-slate-700">
+          {% for step in n.chain %}<li>{{ step }}</li>{% else %}<li>{{ n.reason }}</li>{% endfor %}
+        </ol>
+      </div>
+    </article>
+    {% else %}<div class="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">No news reaches this client yet.</div>{% endfor %}
+  </div>
+
+  <!-- Relationship map -->
+  <div id="panel-map" x-show="tab === 'map'" x-cloak class="mt-6">
+    <div class="mb-3 flex flex-wrap items-center gap-3">
+      <div class="relative">
+        <input x-model="q" @input.debounce.200ms="search()" placeholder="Find a company or person" class="w-60 rounded-lg border border-slate-300 bg-white py-1.5 pl-9 pr-3 text-sm shadow-sm focus:border-navy-700 focus:outline-none focus:ring-4 focus:ring-blue-100">
+        <svg class="pointer-events-none absolute left-3 top-2 h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </div>
+      <span x-show="q && hits !== null" x-cloak class="text-xs text-slate-500" x-text="hits + (hits === 1 ? ' match' : ' matches')"></span>
+      <div class="flex flex-wrap items-center gap-1.5 text-xs">
+        <span class="text-slate-400">Show</span>
+        {% for k, label in [('counterparty', 'Suppliers and customers'), ('person', 'People'), ('sector', 'Sector'), ('need', 'Opportunities')] %}
+        <label class="cursor-pointer select-none rounded-full border px-3 py-1 font-medium transition" data-k="{{ k }}" :class="show[$el.dataset.k] ? 'border-navy-700 bg-navy-800 text-white' : 'border-slate-300 bg-white text-slate-500 hover:bg-slate-50'">
+          <input type="checkbox" class="sr-only" data-k="{{ k }}" x-model="show.{{ k }}" @change="toggle($el.dataset.k)">{{ label }}
+        </label>
+        {% endfor %}
+      </div>
+      <div class="ml-auto flex items-center gap-1.5">
+        <button type="button" @click="zoom(1.25)" class="h-8 w-8 rounded-lg border border-slate-300 bg-white text-base font-semibold text-slate-600 hover:bg-slate-50" aria-label="Zoom in">+</button>
+        <button type="button" @click="zoom(0.8)" class="h-8 w-8 rounded-lg border border-slate-300 bg-white text-base font-semibold text-slate-600 hover:bg-slate-50" aria-label="Zoom out">−</button>
+        <button type="button" @click="fit()" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">Fit to screen</button>
+        <button type="button" @click="save()" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">Save as image</button>
+      </div>
+    </div>
+
+    <div class="grid gap-4 lg:grid-cols-[1fr_320px]">
+      <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div x-ref="cy" data-name="{{ g.id }}-relationship-map" class="h-[620px] w-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:22px_22px]"></div>
+        <p x-show="mapError" x-cloak class="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-slate-500">The map library could not load. Check the internet connection and reload the page.</p>
+        <div class="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-x-4 gap-y-1 rounded-lg bg-white/90 px-3 py-2 text-[11px] text-slate-600 shadow-sm ring-1 ring-slate-200">
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded bg-blue-600"></span>Group company</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded border-2 border-sky-500 bg-sky-50"></span>Supplier</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded border-2 border-violet-500 bg-violet-50"></span>Customer</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-slate-300"></span>Person</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-teal-600"></span>Sector</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-amber-600"></span>Opportunity</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded border-2 border-amber-400"></span>Has recent news</span>
+        </div>
+      </div>
+
+      <aside class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:max-h-[620px] lg:overflow-y-auto">
+        <!-- nothing selected -->
+        <div x-show="!selected">
+          <h3 class="font-bold text-slate-900">How to read this map</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">Money and goods move left to right: suppliers, then the client's own companies, then customers. The shaded box is the client group. Hover over anything to trace its links. Click it for details.</p>
+          <dl class="mt-4 grid grid-cols-2 gap-3 text-sm" x-show="summary" x-cloak>
+            <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Group companies</dt><dd class="text-xl font-bold text-slate-900" x-text="summary && summary.companies"></dd></div>
+            <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Suppliers</dt><dd class="text-xl font-bold text-slate-900" x-text="summary && summary.suppliers"></dd></div>
+            <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Customers</dt><dd class="text-xl font-bold text-slate-900" x-text="summary && summary.customers"></dd></div>
+            <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">People</dt><dd class="text-xl font-bold text-slate-900" x-text="summary && summary.people"></dd></div>
+          </dl>
+          <p class="mt-4 text-xs text-slate-400">An amber outline means recent news touches that company or sector. A dashed line means a lower-confidence link.</p>
+        </div>
+        <!-- something selected -->
+        <div x-show="selected" x-cloak>
+          <div class="flex items-start justify-between gap-2">
+            <span class="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700" x-text="selected && kindName[selected.kind]"></span>
+            <button type="button" @click="pick(null)" class="text-xs text-slate-400 hover:text-slate-700">Clear</button>
+          </div>
+          <h3 class="mt-2 text-lg font-bold leading-snug text-slate-900" x-text="selected && selected.label"></h3>
+          <p class="text-sm text-slate-500" x-show="selected && selected.role" x-text="selected && selected.role"></p>
+          <p class="mt-2 text-xs leading-relaxed text-slate-500" x-show="selected && selected.detail" x-text="selected && selected.detail"></p>
+          <p class="mt-2 text-xs text-slate-400" x-show="selected && selected.kind === 'counterparty'">Outside this client group.</p>
+
+          <div class="mt-4" x-show="selected && selected.news.length" x-cloak>
+            <h4 class="text-xs font-semibold uppercase tracking-wide text-amber-700">Recent news</h4>
+            <ul class="mt-2 space-y-2.5">
+              <template x-for="n in (selected ? selected.news : [])" :key="n.headline">
+                <li class="rounded-lg bg-amber-50 p-2.5 text-sm leading-snug text-slate-800">
+                  <span x-text="n.headline"></span>
+                  <span class="mt-1 flex items-center gap-2 text-[11px] text-slate-500">
+                    <span x-text="n.date"></span>
+                    <a x-show="n.url" :href="n.url" target="_blank" rel="noopener" class="text-blue-700 underline">Source</a>
+                  </span>
+                </li>
+              </template>
+            </ul>
+          </div>
+
+          <div class="mt-4" x-show="selected && selected.conns.length" x-cloak>
+            <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Connections</h4>
+            <ul class="mt-2 divide-y divide-slate-100 text-sm">
+              <template x-for="c in (selected ? selected.conns : [])" :key="c.id + c.verb + c.out">
+                <li class="py-2">
+                  <template x-if="c.out"><span class="text-slate-500"><span x-text="c.verb"></span> <button type="button" @click="pick(c.id)" class="text-left font-medium text-blue-700 hover:underline" x-text="c.label"></button></span></template>
+                  <template x-if="!c.out"><span class="text-slate-500"><button type="button" @click="pick(c.id)" class="text-left font-medium text-blue-700 hover:underline" x-text="c.label"></button> <span x-text="c.verb"></span> this</span></template>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <script type="application/json" id="graph-data">{{ graph | tojson }}</script>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+# Data phase needs only Python 3.11+ and the standard library, plus reportlab for the two sample PDFs.
+reportlab>=4.0
+# App (step 1 onward):
+fastapi>=0.110
+uvicorn[standard]>=0.29
+jinja2>=3.1
+python-multipart>=0.0.9
+itsdangerous>=2.1
+# Reads numbers from text PDFs (step 6):
+pdfplumber>=0.11
+# Only for making the sample scan (seed/make_scan.py):
+pillow>=10
+numpy>=1.26
+# Exports the spread to Excel (step 6):
+openpyxl>=3.1

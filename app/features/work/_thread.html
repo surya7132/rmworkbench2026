@@ -1,0 +1,14 @@
+<div class="mt-3 border-t border-slate-100 pt-3">
+  {% if error %}<div class="mb-2 text-sm text-red-700">{{ error }}</div>{% endif %}
+  <ul class="space-y-2">
+    {% for t in thread %}
+    <li class="text-sm {{ 'text-slate-400 italic' if t['kind'] in ('system','ladder') else 'text-slate-700' }}">
+      <span class="text-xs text-slate-400">{{ t['at']|ddmmm }}{% if t['at']|length > 10 %} {{ t['at'][11:16] }}{% endif %} · {{ t['by_name'] or 'System' }}</span><br>{{ t['text'] }}
+    </li>
+    {% else %}<li class="text-sm text-slate-400">No messages yet.</li>{% endfor %}
+  </ul>
+  <form hx-post="/work/{{ w.id }}/note" hx-target="#t-{{ w.id }}" hx-swap="innerHTML" class="mt-3 flex gap-2">
+    <input name="text" required placeholder="Add a note" class="flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+    <button class="rounded-md bg-navy-800 text-white px-3 py-1.5 text-xs font-semibold">Add</button>
+  </form>
+</div>

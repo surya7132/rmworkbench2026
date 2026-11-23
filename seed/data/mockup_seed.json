@@ -1,0 +1,2930 @@
+{
+ "users": [
+  {
+   "id": "u_rohan",
+   "name": "Rohan Deshmukh",
+   "role": "Relationship manager",
+   "fn": "RM",
+   "ini": "RD"
+  },
+  {
+   "id": "u_meera",
+   "name": "Meera Kapoor",
+   "role": "Team lead",
+   "fn": "Team",
+   "ini": "MK"
+  },
+  {
+   "id": "u_karan",
+   "name": "Karan Shah",
+   "role": "Relationship manager",
+   "fn": "RM",
+   "ini": "KS"
+  },
+  {
+   "id": "u_arvind",
+   "name": "Arvind Menon",
+   "role": "Specialist",
+   "fn": "Structured Finance",
+   "ini": "AM"
+  },
+  {
+   "id": "u_kavita",
+   "name": "Kavita Rao",
+   "role": "Specialist",
+   "fn": "Trade and Guarantees",
+   "ini": "KR"
+  },
+  {
+   "id": "u_priya",
+   "name": "Priya Shah",
+   "role": "Specialist",
+   "fn": "Treasury Solutions",
+   "ini": "PS"
+  },
+  {
+   "id": "u_neha",
+   "name": "Neha Iyer",
+   "role": "Specialist",
+   "fn": "Cash Management",
+   "ini": "NI"
+  },
+  {
+   "id": "u_farhan",
+   "name": "Farhan Qureshi",
+   "role": "Specialist",
+   "fn": "Supply Chain Finance",
+   "ini": "FQ"
+  },
+  {
+   "id": "u_ananya",
+   "name": "Ananya Dutta",
+   "role": "Credit reviewer",
+   "fn": "Credit Risk",
+   "ini": "AD"
+  },
+  {
+   "id": "u_sameer",
+   "name": "Sameer Joshi",
+   "role": "Credit analyst",
+   "fn": "Credit Risk",
+   "ini": "SJ"
+  },
+  {
+   "id": "u_aditi",
+   "name": "Aditi Bose",
+   "role": "Legal counsel",
+   "fn": "Legal",
+   "ini": "AB"
+  },
+  {
+   "id": "u_miu",
+   "name": "MIU desk",
+   "role": "Function queue",
+   "fn": "MIU",
+   "ini": "MI"
+  }
+ ],
+ "groups": [
+  {
+   "id": "g_vantage",
+   "name": "Vantage Infra Group",
+   "short": "Vantage Infra",
+   "primary": "Vantage Infra Projects Ltd",
+   "segment": "Large corporate",
+   "sector": "EPC and infrastructure",
+   "tier": 1,
+   "rm": "u_rohan",
+   "seeded": true,
+   "sanctioned": 220,
+   "utilised": 178,
+   "rating": "A+",
+   "trend": "up",
+   "watch": "None",
+   "reviewDue": "2027-01-15",
+   "cadence": 30,
+   "lastContact": "2026-11-02",
+   "since": 2016,
+   "deposits": 64,
+   "flows": "High"
+  },
+  {
+   "id": "g_meridian",
+   "name": "Meridian Fabrics Group",
+   "short": "Meridian Fabrics",
+   "primary": "Meridian Fabrics Ltd",
+   "segment": "Mid corporate",
+   "sector": "Textile exporter",
+   "tier": 2,
+   "rm": "u_rohan",
+   "seeded": true,
+   "sanctioned": 35,
+   "utilised": 13,
+   "rating": "BBB+",
+   "trend": "flat",
+   "watch": "P2",
+   "reviewDue": "2027-01-10",
+   "cadence": 60,
+   "lastContact": "2026-10-23",
+   "since": 2019,
+   "deposits": 9,
+   "flows": "Medium"
+  },
+  {
+   "id": "g_nordholm",
+   "name": "Nordholm Industries India",
+   "short": "Nordholm Industries",
+   "primary": "Nordholm Industries India Pvt Ltd",
+   "segment": "Large corporate (MNC subsidiary)",
+   "sector": "Auto components",
+   "tier": 1,
+   "rm": "u_rohan",
+   "seeded": true,
+   "sanctioned": 30,
+   "utilised": 4,
+   "rating": "A-",
+   "trend": "down",
+   "watch": "P1",
+   "reviewDue": "2027-02-12",
+   "cadence": 30,
+   "lastContact": "2026-10-16",
+   "since": 2015,
+   "deposits": 22,
+   "flows": "High"
+  },
+  {
+   "id": "g_bluewater",
+   "name": "Bluewater Marine",
+   "short": "Bluewater Marine",
+   "primary": "Bluewater Marine Ltd",
+   "segment": "Large corporate",
+   "sector": "Shipping",
+   "tier": 1,
+   "rm": "u_rohan",
+   "sanctioned": 410,
+   "utilised": 298,
+   "rating": "A-",
+   "trend": "flat",
+   "watch": "P3",
+   "reviewDue": "2027-02-05",
+   "cadence": 45,
+   "lastContact": "2026-11-03",
+   "since": 2014,
+   "deposits": 120,
+   "flows": "High"
+  },
+  {
+   "id": "g_corvina",
+   "name": "Corvina Pharma",
+   "short": "Corvina Pharma",
+   "primary": "Corvina Pharma Ltd",
+   "segment": "Large corporate",
+   "sector": "Pharmaceuticals",
+   "tier": 1,
+   "rm": "u_rohan",
+   "sanctioned": 360,
+   "utilised": 190,
+   "rating": "A",
+   "trend": "up",
+   "watch": "P3",
+   "reviewDue": "2027-03-02",
+   "cadence": 45,
+   "lastContact": "2026-10-28",
+   "since": 2017,
+   "deposits": 88,
+   "flows": "High"
+  },
+  {
+   "id": "g_delta",
+   "name": "Delta Agro Foods",
+   "short": "Delta Agro Foods",
+   "primary": "Delta Agro Foods Ltd",
+   "segment": "Mid corporate",
+   "sector": "Food and FMCG",
+   "tier": 2,
+   "rm": "u_rohan",
+   "sanctioned": 140,
+   "utilised": 101,
+   "rating": "BBB+",
+   "trend": "flat",
+   "watch": "None",
+   "reviewDue": "2026-12-29",
+   "cadence": 60,
+   "lastContact": "2026-09-18",
+   "since": 2018,
+   "deposits": 31,
+   "flows": "Medium"
+  },
+  {
+   "id": "g_evergreen",
+   "name": "Evergreen Realty",
+   "short": "Evergreen Realty",
+   "primary": "Evergreen Realty Ltd",
+   "segment": "Large corporate",
+   "sector": "Real estate",
+   "tier": 1,
+   "rm": "u_rohan",
+   "sanctioned": 520,
+   "utilised": 455,
+   "rating": "BBB",
+   "trend": "down",
+   "watch": "None",
+   "reviewDue": "2027-02-20",
+   "cadence": 30,
+   "lastContact": "2026-11-09",
+   "since": 2013,
+   "deposits": 40,
+   "flows": "Medium"
+  },
+  {
+   "id": "g_fulcrum",
+   "name": "Fulcrum Auto",
+   "short": "Fulcrum Auto",
+   "primary": "Fulcrum Auto Ltd",
+   "segment": "Mid corporate",
+   "sector": "Auto components",
+   "tier": 2,
+   "rm": "u_rohan",
+   "sanctioned": 110,
+   "utilised": 70,
+   "rating": "BBB",
+   "trend": "flat",
+   "watch": "None",
+   "reviewDue": "2027-01-12",
+   "cadence": 60,
+   "lastContact": "2026-11-06",
+   "since": 2020,
+   "deposits": 18,
+   "flows": "Medium"
+  },
+  {
+   "id": "g_granite",
+   "name": "Granite Cement",
+   "short": "Granite Cement",
+   "primary": "Granite Cement Ltd",
+   "segment": "Large corporate",
+   "sector": "Cement",
+   "tier": 1,
+   "rm": "u_rohan",
+   "sanctioned": 380,
+   "utilised": 310,
+   "rating": "A-",
+   "trend": "flat",
+   "watch": "None",
+   "reviewDue": "2027-02-20",
+   "cadence": 45,
+   "lastContact": "2026-11-10",
+   "since": 2012,
+   "deposits": 75,
+   "flows": "High"
+  },
+  {
+   "id": "g_helix",
+   "name": "Helix Packaging",
+   "short": "Helix Packaging",
+   "primary": "Helix Packaging Ltd",
+   "segment": "Mid corporate",
+   "sector": "Packaging",
+   "tier": 3,
+   "rm": "u_rohan",
+   "sanctioned": 60,
+   "utilised": 38,
+   "rating": "BBB-",
+   "trend": "down",
+   "watch": "P3",
+   "reviewDue": "2026-11-30",
+   "cadence": 90,
+   "lastContact": "2026-08-28",
+   "since": 2021,
+   "deposits": 6,
+   "flows": "Low"
+  },
+  {
+   "id": "g_kestrel",
+   "name": "Kestrel Polymers",
+   "short": "Kestrel Polymers",
+   "primary": "Kestrel Polymers Ltd",
+   "segment": "Mid corporate",
+   "sector": "Chemicals",
+   "tier": 2,
+   "rm": "u_karan",
+   "sanctioned": 120,
+   "utilised": 84,
+   "rating": "BBB",
+   "trend": "flat",
+   "watch": "P3",
+   "reviewDue": "2026-12-18",
+   "cadence": 60,
+   "lastContact": "2026-10-20",
+   "since": 2019,
+   "deposits": 14,
+   "flows": "Medium"
+  },
+  {
+   "id": "g_astra",
+   "name": "Astra Logistics",
+   "short": "Astra Logistics",
+   "primary": "Astra Logistics Ltd",
+   "segment": "Mid corporate",
+   "sector": "Logistics",
+   "tier": 2,
+   "rm": "u_karan",
+   "sanctioned": 90,
+   "utilised": 62,
+   "rating": "BBB+",
+   "trend": "up",
+   "watch": "P3",
+   "reviewDue": "2027-01-22",
+   "cadence": 90,
+   "lastContact": "2026-09-30",
+   "since": 2022,
+   "deposits": 12,
+   "flows": "Medium"
+  }
+ ],
+ "parties": [
+  {
+   "id": "e_vip",
+   "group": "g_vantage",
+   "name": "Vantage Infra Projects Ltd",
+   "type": "company",
+   "role": "Primary borrower"
+  },
+  {
+   "id": "e_vhold",
+   "group": "g_vantage",
+   "name": "Vantage Holdings Pvt Ltd",
+   "type": "company",
+   "role": "Promoter entity"
+  },
+  {
+   "id": "e_spv1",
+   "group": "g_vantage",
+   "name": "Vantage Highway SPV 1",
+   "type": "company",
+   "role": "Project SPV"
+  },
+  {
+   "id": "e_spv2",
+   "group": "g_vantage",
+   "name": "Vantage Highway SPV 2",
+   "type": "company",
+   "role": "Project SPV"
+  },
+  {
+   "id": "e_sha",
+   "group": "g_vantage",
+   "name": "State Highway Authority",
+   "type": "company",
+   "role": "Customer (order of ₹520cr)"
+  },
+  {
+   "id": "e_steel",
+   "group": "g_vantage",
+   "name": "Steelco Suppliers Pvt Ltd",
+   "type": "company",
+   "role": "Vendor"
+  },
+  {
+   "id": "e_ridge",
+   "group": "g_vantage",
+   "name": "Ridgeway Earthmovers",
+   "type": "company",
+   "role": "Subcontractor"
+  },
+  {
+   "id": "e_cons",
+   "group": "g_vantage",
+   "name": "Consortium lenders (two banks)",
+   "type": "bank",
+   "role": "Other lenders"
+  },
+  {
+   "id": "p_rajiv",
+   "group": "g_vantage",
+   "name": "Rajiv Mehta",
+   "type": "person",
+   "role": "CFO"
+  },
+  {
+   "id": "p_sunil",
+   "group": "g_vantage",
+   "name": "Sunil Kulkarni",
+   "type": "person",
+   "role": "Head of Projects"
+  },
+  {
+   "id": "p_dilip",
+   "group": "g_vantage",
+   "name": "Dilip Raghavan",
+   "type": "person",
+   "role": "Chairman and promoter"
+  },
+  {
+   "id": "e_mer",
+   "group": "g_meridian",
+   "name": "Meridian Fabrics Ltd",
+   "type": "company",
+   "role": "Primary borrower"
+  },
+  {
+   "id": "e_mprom",
+   "group": "g_meridian",
+   "name": "Patil Family Holdings",
+   "type": "company",
+   "role": "Promoter entity"
+  },
+  {
+   "id": "e_eub",
+   "group": "g_meridian",
+   "name": "EU retail buyer (new, Oct 2026)",
+   "type": "company",
+   "role": "Export customer"
+  },
+  {
+   "id": "e_coastal",
+   "group": "g_meridian",
+   "name": "Coastal Yarns Pvt Ltd",
+   "type": "company",
+   "role": "Vendor"
+  },
+  {
+   "id": "e_dyeing",
+   "group": "g_meridian",
+   "name": "Dyeing and Finishing Co.",
+   "type": "company",
+   "role": "Vendor"
+  },
+  {
+   "id": "e_weave",
+   "group": "g_meridian",
+   "name": "Weavecraft Mills",
+   "type": "company",
+   "role": "Vendor"
+  },
+  {
+   "id": "e_sunrise",
+   "group": "g_meridian",
+   "name": "Sunrise Packaging",
+   "type": "company",
+   "role": "Vendor"
+  },
+  {
+   "id": "p_anil",
+   "group": "g_meridian",
+   "name": "Anil Patil",
+   "type": "person",
+   "role": "Promoter and MD"
+  },
+  {
+   "id": "p_nikhil",
+   "group": "g_meridian",
+   "name": "Nikhil Joshi",
+   "type": "person",
+   "role": "Finance Manager"
+  },
+  {
+   "id": "e_nord",
+   "group": "g_nordholm",
+   "name": "Nordholm Industries India Pvt Ltd",
+   "type": "company",
+   "role": "Primary borrower"
+  },
+  {
+   "id": "e_npar",
+   "group": "g_nordholm",
+   "name": "Nordholm Group (parent)",
+   "type": "company",
+   "role": "Parent"
+  },
+  {
+   "id": "e_oem",
+   "group": "g_nordholm",
+   "name": "Tier-1 OEM customer",
+   "type": "company",
+   "role": "Largest customer"
+  },
+  {
+   "id": "e_rt",
+   "group": "g_nordholm",
+   "name": "Regional Treasury, Singapore",
+   "type": "company",
+   "role": "Approves cross-border mandates"
+  },
+  {
+   "id": "p_vasudha",
+   "group": "g_nordholm",
+   "name": "Vasudha Rao",
+   "type": "person",
+   "role": "Finance Controller"
+  }
+ ],
+ "links": [
+  {
+   "from": "e_vhold",
+   "to": "e_vip",
+   "type": "owns 62%"
+  },
+  {
+   "from": "e_vip",
+   "to": "e_spv1",
+   "type": "owns"
+  },
+  {
+   "from": "e_vip",
+   "to": "e_spv2",
+   "type": "owns"
+  },
+  {
+   "from": "p_dilip",
+   "to": "e_vhold",
+   "type": "directs"
+  },
+  {
+   "from": "p_rajiv",
+   "to": "e_vip",
+   "type": "CFO of"
+  },
+  {
+   "from": "p_sunil",
+   "to": "e_vip",
+   "type": "Head of Projects at"
+  },
+  {
+   "from": "e_sha",
+   "to": "e_vip",
+   "type": "buys from"
+  },
+  {
+   "from": "e_vip",
+   "to": "e_steel",
+   "type": "buys from"
+  },
+  {
+   "from": "e_vip",
+   "to": "e_ridge",
+   "type": "buys from"
+  },
+  {
+   "from": "e_cons",
+   "to": "e_vip",
+   "type": "lends to"
+  },
+  {
+   "from": "e_mprom",
+   "to": "e_mer",
+   "type": "owns"
+  },
+  {
+   "from": "p_anil",
+   "to": "e_mer",
+   "type": "MD of"
+  },
+  {
+   "from": "p_nikhil",
+   "to": "e_mer",
+   "type": "Finance Manager of"
+  },
+  {
+   "from": "e_eub",
+   "to": "e_mer",
+   "type": "buys from"
+  },
+  {
+   "from": "e_mer",
+   "to": "e_coastal",
+   "type": "buys from"
+  },
+  {
+   "from": "e_mer",
+   "to": "e_dyeing",
+   "type": "buys from"
+  },
+  {
+   "from": "e_mer",
+   "to": "e_weave",
+   "type": "buys from"
+  },
+  {
+   "from": "e_mer",
+   "to": "e_sunrise",
+   "type": "buys from"
+  },
+  {
+   "from": "e_npar",
+   "to": "e_nord",
+   "type": "owns 100%"
+  },
+  {
+   "from": "e_oem",
+   "to": "e_nord",
+   "type": "buys from"
+  },
+  {
+   "from": "p_vasudha",
+   "to": "e_nord",
+   "type": "Finance Controller of"
+  },
+  {
+   "from": "e_rt",
+   "to": "e_npar",
+   "type": "treasury of"
+  }
+ ],
+ "stakeholders": [
+  {
+   "id": "p_rajiv",
+   "group": "g_vantage",
+   "strength": "Strong",
+   "comp": {
+    "recency": "Met 15 days ago",
+    "seniority": "CFO",
+    "responsive": "Replies within a day",
+    "confirmed": "RM-confirmed"
+   },
+   "rights": "Decides funding mix and lender selection",
+   "influence": "High",
+   "owner": "Rohan Deshmukh",
+   "last": "2026-11-02",
+   "channel": "Phone, then email",
+   "priorities": "Refinancing before February; guarantee turnaround",
+   "objection": "RBL guarantee turnaround slower than peers",
+   "knows": "Kavita Rao (Trade)"
+  },
+  {
+   "id": "p_sunil",
+   "group": "g_vantage",
+   "strength": "Established",
+   "comp": {
+    "recency": "Met 47 days ago",
+    "seniority": "Head of Projects",
+    "responsive": "Replies in 2 days",
+    "confirmed": "RM-confirmed"
+   },
+   "rights": "Technical sign-off on the highway contract",
+   "influence": "Medium",
+   "owner": "Rohan Deshmukh",
+   "last": "2026-10-01",
+   "channel": "Site visit",
+   "priorities": "Mobilisation timeline; vendor payments",
+   "objection": "None recorded",
+   "knows": "Rohan Deshmukh"
+  },
+  {
+   "id": "p_dilip",
+   "group": "g_vantage",
+   "strength": "Weak",
+   "comp": {
+    "recency": "Not met in 14 months",
+    "seniority": "Chairman",
+    "responsive": "Unknown",
+    "confirmed": "Not confirmed"
+   },
+   "rights": "Final say on promoter support and capex",
+   "influence": "High",
+   "owner": "Unassigned",
+   "last": "2025-09-20",
+   "channel": "Through CFO",
+   "priorities": "Capex pipeline; order book",
+   "objection": "None recorded",
+   "knows": "Meera Kapoor (met at a 2025 event)"
+  },
+  {
+   "id": "p_anil",
+   "group": "g_meridian",
+   "strength": "Developing",
+   "comp": {
+    "recency": "Met 25 days ago",
+    "seniority": "Promoter and MD",
+    "responsive": "Slow; delegates to Finance",
+    "confirmed": "RM-confirmed"
+   },
+   "rights": "Final decisions",
+   "influence": "High",
+   "owner": "Rohan Deshmukh",
+   "last": "2026-10-23",
+   "channel": "Video call",
+   "priorities": "Export growth; cost control",
+   "objection": "Considers hedging speculation",
+   "knows": "Priya Shah (Treasury)"
+  },
+  {
+   "id": "p_nikhil",
+   "group": "g_meridian",
+   "strength": "Established",
+   "comp": {
+    "recency": "Call detected 1 day ago (unlogged)",
+    "seniority": "Finance Manager",
+    "responsive": "Same day",
+    "confirmed": "RM-confirmed"
+   },
+   "rights": "Day-to-day banking; vendor list",
+   "influence": "Medium",
+   "owner": "Rohan Deshmukh",
+   "last": "2026-11-16",
+   "channel": "Phone",
+   "priorities": "Packing credit timing; vendor payments",
+   "objection": "None recorded",
+   "knows": "Rohan Deshmukh"
+  },
+  {
+   "id": "p_vasudha",
+   "group": "g_nordholm",
+   "strength": "Established",
+   "comp": {
+    "recency": "Met 32 days ago",
+    "seniority": "Finance Controller",
+    "responsive": "Replies in 2 days",
+    "confirmed": "RM-confirmed"
+   },
+   "rights": "Local operations; cannot commit new mandates alone",
+   "influence": "Medium",
+   "owner": "Rohan Deshmukh",
+   "last": "2026-10-16",
+   "channel": "Email",
+   "priorities": "Collections from the OEM customer",
+   "objection": "Regional Treasury approves mandates",
+   "knows": "Neha Iyer (Cash Management)"
+  }
+ ],
+ "facilities": [
+  {
+   "id": "fa_v1",
+   "group": "g_vantage",
+   "type": "Term loans",
+   "sanctioned": 160,
+   "outstanding": 140,
+   "maturity": "2031-03-31",
+   "pricing": "9.60% (grid band 9.40 to 9.85)",
+   "security": "First charge on project receivables and fixed assets",
+   "coverage": "1.32x",
+   "covenants": "DSCR at least 1.3x; total debt to net worth at most 3.0x",
+   "authority": "Credit committee",
+   "review": "2027-01-15",
+   "status": "Standard"
+  },
+  {
+   "id": "fa_v2",
+   "group": "g_vantage",
+   "type": "Bank guarantees",
+   "sanctioned": 60,
+   "outstanding": 38,
+   "maturity": null,
+   "pricing": "1.00% a year",
+   "security": "Counter-guarantee and margin",
+   "coverage": "n/a",
+   "covenants": "None specific",
+   "authority": "Delegated up to headroom",
+   "review": "2027-01-15",
+   "status": "Standard"
+  },
+  {
+   "id": "fa_m1",
+   "group": "g_meridian",
+   "type": "Packing credit",
+   "sanctioned": 35,
+   "outstanding": 13,
+   "maturity": "2027-03-31",
+   "pricing": "8.90% to 9.40%",
+   "security": "Hypothecation of stock and receivables",
+   "coverage": "1.55x",
+   "covenants": "Current ratio at least 1.2x",
+   "authority": "Delegated",
+   "review": "2027-01-10",
+   "status": "Standard"
+  },
+  {
+   "id": "fa_n1",
+   "group": "g_nordholm",
+   "type": "Trade finance",
+   "sanctioned": 30,
+   "outstanding": 4,
+   "maturity": null,
+   "pricing": "Standard tariff",
+   "security": "Parent comfort letter",
+   "coverage": "n/a",
+   "covenants": "None specific",
+   "authority": "Credit; new credit paused",
+   "review": "2027-02-12",
+   "status": "Paused by EWS"
+  }
+ ],
+ "facts": [
+  {
+   "id": "F-1001",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "₹180cr NCD matures on 9 Feb 2027",
+   "label": "ext",
+   "share": "discuss",
+   "source": "Debt instrument records",
+   "date": "2026-11-07",
+   "eff": "2027-02-09",
+   "sup": null,
+   "match": 1,
+   "connector": "external-filings"
+  },
+  {
+   "id": "F-1002",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "New charge on receivables registered by another bank",
+   "label": "ext",
+   "share": "internal",
+   "source": "MCA charge filing",
+   "date": "2026-10-29",
+   "eff": null,
+   "sup": null,
+   "match": 0.97,
+   "connector": "mca-registry"
+  },
+  {
+   "id": "F-1003",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "Long-term rating upgraded from A to A+",
+   "label": "ext",
+   "share": "discuss",
+   "source": "Rating rationale",
+   "date": "2026-10-28",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "rating-agencies"
+  },
+  {
+   "id": "F-1004",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "₹140cr term loans with RBL; no overdues in 36 months",
+   "label": "int",
+   "share": "discuss",
+   "source": "Core banking",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-1005",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "₹520cr EPC order won from a state highway authority",
+   "label": "ext",
+   "share": "discuss",
+   "source": "Stock exchange disclosure",
+   "date": "2026-11-03",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "external-filings"
+  },
+  {
+   "id": "F-1006",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "₹38cr guarantees currently issued by RBL",
+   "label": "int",
+   "share": "discuss",
+   "source": "Trade finance system",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-1007",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "Group limit ₹220cr; utilised ₹178cr; headroom ₹42cr",
+   "label": "int",
+   "share": "discuss",
+   "source": "Limits and exposure system",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "limits-exposure"
+  },
+  {
+   "id": "F-1008",
+   "group": "g_vantage",
+   "entity": "p_rajiv",
+   "statement": "CFO said RBL guarantee turnaround was slower than peer banks on the last bid",
+   "label": "client",
+   "share": "discuss",
+   "source": "Meeting note, 2 Nov",
+   "date": "2026-11-02",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "crm"
+  },
+  {
+   "id": "F-1009",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "RBL could take ₹90–150cr (50 to 83%) of the refinancing",
+   "label": "model",
+   "share": "internal",
+   "source": "Compass wallet model v1",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "compass-model"
+  },
+  {
+   "id": "F-1010",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "Guarantees likely needed by about 3 Dec (30 days from award)",
+   "label": "model",
+   "share": "internal",
+   "source": "Compass event model v1",
+   "date": "2026-11-16",
+   "eff": "2026-12-03",
+   "sup": null,
+   "match": 1,
+   "connector": "compass-model"
+  },
+  {
+   "id": "F-1011",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "Vantage listed among bidders for the highway package",
+   "label": "sup",
+   "share": "internal",
+   "source": "News report",
+   "date": "2026-07-14",
+   "eff": null,
+   "sup": "F-1005",
+   "match": 1,
+   "connector": "news-feed"
+  },
+  {
+   "id": "F-1012",
+   "group": "g_vantage",
+   "entity": "e_vip",
+   "statement": "Collateral cover on the proposed refinancing is 1.32x against a policy minimum of 1.4x",
+   "label": "blk",
+   "share": "internal",
+   "source": "Deal canvas calculation",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "los-credit"
+  },
+  {
+   "id": "F-1013",
+   "group": "g_vantage",
+   "entity": "e_steel",
+   "statement": "Steelco Suppliers received ₹40cr in 12 months (52 payments)",
+   "label": "int",
+   "share": "internal",
+   "source": "Payment flows",
+   "date": "2026-11-10",
+   "eff": null,
+   "sup": null,
+   "match": 0.93,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-1014",
+   "group": "g_vantage",
+   "entity": "e_ridge",
+   "statement": "Ridgeway Earthmovers received ₹12.5cr in 12 months (30 payments)",
+   "label": "int",
+   "share": "internal",
+   "source": "Payment flows",
+   "date": "2026-11-10",
+   "eff": null,
+   "sup": null,
+   "match": 0.88,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-1015",
+   "group": "g_vantage",
+   "entity": "e_sha",
+   "statement": "State Highway Authority paid ₹96cr through RBL in 12 months (14 payments)",
+   "label": "int",
+   "share": "discuss",
+   "source": "Payment flows",
+   "date": "2026-11-10",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-2001",
+   "group": "g_meridian",
+   "entity": "e_mer",
+   "statement": "Export receipts via RBL up 22%, from ₹68cr to ₹83cr a year",
+   "label": "int",
+   "share": "discuss",
+   "source": "Core banking, inward remittances",
+   "date": "2026-11-05",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-2002",
+   "group": "g_meridian",
+   "entity": "e_eub",
+   "statement": "New EU buyer remitting since October 2026",
+   "label": "client",
+   "share": "discuss",
+   "source": "Inward remittances; confirmed by Nikhil Joshi on 23 Oct",
+   "date": "2026-11-05",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-2003",
+   "group": "g_meridian",
+   "entity": "e_mer",
+   "statement": "No forward contracts or FX limit on record",
+   "label": "int",
+   "share": "discuss",
+   "source": "Treasury system",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-2004",
+   "group": "g_meridian",
+   "entity": "e_mer",
+   "statement": "EUR share of receipts estimated at 36 to 54% (₹30–45cr)",
+   "label": "model",
+   "share": "internal",
+   "source": "Compass wallet model v1",
+   "date": "2026-11-05",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "compass-model"
+  },
+  {
+   "id": "F-2005",
+   "group": "g_meridian",
+   "entity": "e_mer",
+   "statement": "Packing credit outstanding ₹13cr against a ₹35cr limit",
+   "label": "int",
+   "share": "discuss",
+   "source": "Loan system",
+   "date": "2026-11-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "limits-exposure"
+  },
+  {
+   "id": "F-2006",
+   "group": "g_meridian",
+   "entity": "e_mer",
+   "statement": "₹28cr paid to 12 vendors that bank elsewhere in 12 months",
+   "label": "int",
+   "share": "internal",
+   "source": "Outward payment flows",
+   "date": "2026-11-04",
+   "eff": null,
+   "sup": null,
+   "match": 0.9,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-2007",
+   "group": "g_meridian",
+   "entity": "e_eub",
+   "statement": "New EU buyer accounts for 38% of export receipts since October",
+   "label": "int",
+   "share": "internal",
+   "source": "Inward remittances",
+   "date": "2026-11-14",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-3001",
+   "group": "g_nordholm",
+   "entity": "e_nord",
+   "statement": "Receivable days up 35% year on year",
+   "label": "int",
+   "share": "discuss",
+   "source": "Client stock statements",
+   "date": "2026-10-20",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "documents"
+  },
+  {
+   "id": "F-3002",
+   "group": "g_nordholm",
+   "entity": "e_nord",
+   "statement": "Early warning flag raised; new credit paused",
+   "label": "blk",
+   "share": "internal",
+   "source": "EWS engine",
+   "date": "2026-10-22",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "ews-engine"
+  },
+  {
+   "id": "F-3003",
+   "group": "g_nordholm",
+   "entity": "e_oem",
+   "statement": "₹240cr collected from the OEM customer in 12 months; 45% via RBL",
+   "label": "int",
+   "share": "discuss",
+   "source": "Inward payment flows",
+   "date": "2026-11-10",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "core-banking"
+  },
+  {
+   "id": "F-3004",
+   "group": "g_nordholm",
+   "entity": "e_nord",
+   "statement": "Routing the other ₹132cr via RBL could add ₹5–11cr in average balances",
+   "label": "model",
+   "share": "internal",
+   "source": "Compass wallet model v1",
+   "date": "2026-11-10",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "compass-model"
+  },
+  {
+   "id": "F-3005",
+   "group": "g_nordholm",
+   "entity": "p_vasudha",
+   "statement": "Controller said collections slowed because the OEM customer has its own cash pressure",
+   "label": "client",
+   "share": "discuss",
+   "source": "Meeting note, 16 Oct",
+   "date": "2026-10-16",
+   "eff": null,
+   "sup": null,
+   "match": 1,
+   "connector": "crm"
+  }
+ ],
+ "eng": [
+  {
+   "id": "mt_v_1118",
+   "group": "g_vantage",
+   "type": "meeting",
+   "title": "CFO meeting: refinancing and guarantees",
+   "date": "2026-11-18T11:00:00+05:30",
+   "where": "Client office, BKC",
+   "parts": [
+    "p_rajiv"
+   ],
+   "status": "scheduled",
+   "prep": "incomplete",
+   "objective": "Secure a refinancing discussion with Structured Finance before the February NCD goes to competitive bid, and confirm guarantee timing for the highway order.",
+   "success": "CFO shares the refinancing timetable and agrees to meet Arvind Menon (Structured Finance) by 27 Nov.",
+   "outcome": null,
+   "logged": false,
+   "source": "calendar",
+   "opp": "opp_v1",
+   "agenda": {
+    "must": [
+     "Refinancing intent for the February NCD",
+     "Guarantee amounts and timing for the highway order",
+     "Open commitments on both sides"
+    ],
+    "ifTime": [
+     "Escrow account for highway receipts",
+     "Capex pipeline beyond the highway project"
+    ],
+    "avoid": [
+     "Quoting a refinancing rate before Credit confirms the limit enhancement",
+     "Referring to the competitor charge filing (internal only)",
+     "Committing to a guarantee turnaround time before Trade Operations confirms it"
+    ]
+   },
+   "questions": {
+    "Business": [
+     "What is the capex and order-book outlook after the highway win?"
+    ],
+    "Financial": [
+     "Do you plan to refinance the February NCD or repay part from cash flow?",
+     "What tenor and structure do you prefer?"
+    ],
+    "Relationship": [
+     "What would we need to do to win a larger guarantee share?"
+    ],
+    "Product": [
+     "What guarantee amounts and formats has the authority specified?"
+    ],
+    "Credit": [
+     "Can you share the receivable ageing by authority for our Credit review?"
+    ],
+    "Risk": [],
+    "Future plans": [
+     "Is any further capex planned in the next six months?"
+    ]
+   },
+   "info": [
+    "Receivable ageing by authority",
+    "Debt maturity schedule",
+    "Guarantee formats from the authority"
+   ]
+  },
+  {
+   "id": "en_v_1102",
+   "group": "g_vantage",
+   "type": "meeting",
+   "title": "Quarterly review with CFO",
+   "date": "2026-11-02T15:00:00+05:30",
+   "where": "Client office, BKC",
+   "parts": [
+    "p_rajiv",
+    "p_sunil"
+   ],
+   "status": "held",
+   "logged": true,
+   "source": "rm",
+   "outcome": "CFO confirmed the highway bid and expected a result within two weeks. He asked for indicative guarantee pricing and said turnaround speed will decide the guarantee split. He mentioned the February NCD will need refinancing; no lender chosen yet."
+  },
+  {
+   "id": "en_v_1028",
+   "group": "g_vantage",
+   "type": "call",
+   "title": "Call with CFO on the order win",
+   "date": "2026-10-28T12:30:00+05:30",
+   "where": "Phone, 20 minutes",
+   "parts": [
+    "p_rajiv"
+   ],
+   "status": "held",
+   "logged": true,
+   "source": "outlook-detected",
+   "outcome": "Congratulated on the rating upgrade; flagged interest in a call about the NCD."
+  },
+  {
+   "id": "en_v_1015",
+   "group": "g_vantage",
+   "type": "email",
+   "title": "Email thread: guarantee formats",
+   "date": "2026-10-15T10:00:00+05:30",
+   "where": "Outlook (metadata only)",
+   "parts": [
+    "p_sunil"
+   ],
+   "status": "held",
+   "logged": true,
+   "source": "outlook-detected",
+   "outcome": "Formats requested for the highway guarantee clauses."
+  },
+  {
+   "id": "mt_m_1123",
+   "group": "g_meridian",
+   "type": "meeting",
+   "title": "Video call: export growth and FX",
+   "date": "2026-11-23T15:00:00+05:30",
+   "where": "Video call",
+   "parts": [
+    "p_anil",
+    "p_nikhil"
+   ],
+   "status": "scheduled",
+   "prep": "incomplete",
+   "objective": "Validate the size of the new EUR exposure and how Meridian funds higher export volumes.",
+   "success": "Finance Manager shares the order book and exposure schedule; MD agrees to a call with Priya Shah (Treasury).",
+   "source": "calendar",
+   "opp": "opp_m1",
+   "agenda": {
+    "must": [
+     "EUR share of receipts",
+     "How higher volumes are funded"
+    ],
+    "ifTime": [
+     "Vendor payment terms"
+    ],
+    "avoid": [
+     "Suggesting a hedge ratio or product before Treasury completes suitability",
+     "Telling Meridian which vendors bank elsewhere"
+    ]
+   },
+   "questions": {
+    "Financial": [
+     "What share of receivables is now in EUR?",
+     "How are you funding the higher export volume?"
+    ],
+    "Product": [
+     "Do you have a hedging policy, even an informal one?"
+    ],
+    "Relationship": [],
+    "Business": [],
+    "Credit": [],
+    "Risk": [],
+    "Future plans": []
+   },
+   "info": [
+    "Export order book",
+    "Currency exposure schedule"
+   ]
+  },
+  {
+   "id": "en_m_1023",
+   "group": "g_meridian",
+   "type": "call",
+   "title": "Call with Finance Manager",
+   "date": "2026-10-23T11:00:00+05:30",
+   "where": "Phone",
+   "parts": [
+    "p_nikhil"
+   ],
+   "status": "held",
+   "logged": true,
+   "source": "rm",
+   "outcome": "Confirmed the new EU buyer began shipments in October. MD has no hedging policy; considers hedging speculation."
+  },
+  {
+   "id": "en_m_1116",
+   "group": "g_meridian",
+   "type": "call",
+   "title": "Call with Finance Manager (detected from Outlook)",
+   "date": "2026-11-16T16:20:00+05:30",
+   "where": "Phone, 12 minutes",
+   "parts": [
+    "p_nikhil"
+   ],
+   "status": "notes_pending",
+   "logged": false,
+   "detected": true,
+   "source": "outlook-detected",
+   "outcome": null
+  },
+  {
+   "id": "mt_n_1125",
+   "group": "g_nordholm",
+   "type": "meeting",
+   "title": "Collections review with Finance Controller",
+   "date": "2026-11-25T10:30:00+05:30",
+   "where": "Client office, Pune",
+   "parts": [
+    "p_vasudha"
+   ],
+   "status": "scheduled",
+   "prep": "incomplete",
+   "objective": "Understand why collections slowed and offer a collections diagnostic that needs no new credit.",
+   "success": "Controller shares the receivables ageing and agrees to a session with Neha Iyer (Cash Management).",
+   "source": "calendar",
+   "opp": "opp_n1",
+   "agenda": {
+    "must": [
+     "Receivables ageing",
+     "Collections routing across banks"
+    ],
+    "ifTime": [
+     "Parent treasury process"
+    ],
+    "avoid": [
+     "Any new credit discussion",
+     "Mentioning the internal early warning flag"
+    ]
+   },
+   "questions": {
+    "Financial": [
+     "Which customers account for the rise in receivable days?",
+     "Have payment terms with the OEM changed?"
+    ],
+    "Product": [
+     "How are OEM collections routed across your banks?"
+    ],
+    "Relationship": [],
+    "Business": [],
+    "Credit": [],
+    "Risk": [],
+    "Future plans": []
+   },
+   "info": [
+    "Customer-wise receivables ageing"
+   ]
+  },
+  {
+   "id": "en_n_1016",
+   "group": "g_nordholm",
+   "type": "meeting",
+   "title": "Review with Finance Controller",
+   "date": "2026-10-16T11:00:00+05:30",
+   "where": "Client office, Pune",
+   "parts": [
+    "p_vasudha"
+   ],
+   "status": "held",
+   "logged": true,
+   "source": "rm",
+   "outcome": "Controller confirmed slower collections from the OEM customer, citing its own cash pressure. Regional Treasury in Singapore approves new mandates. Open to a cash management review."
+  }
+ ],
+ "work": [
+  {
+   "id": "W-2001",
+   "title": "Send indicative guarantee pricing to Rajiv Mehta",
+   "type": "commitment",
+   "group": "g_vantage",
+   "caseId": "opp_v2",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-11-02",
+   "due": "2026-11-12T18:00:00+05:30",
+   "clientDeadline": "2026-11-18T11:00:00+05:30",
+   "consequence": "The CFO said turnaround speed decides the guarantee split, and he meets you tomorrow at 11:00.",
+   "state": "In progress",
+   "completion": "Pricing sent to the client and logged",
+   "dependsOn": [
+    "W-2002"
+   ],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [
+    {
+     "t": "2026-11-02",
+     "by": "u_rohan",
+     "text": "Created from the 2 Nov meeting"
+    }
+   ],
+   "v": 1
+  },
+  {
+   "id": "W-2002",
+   "title": "REQ-1041 Guarantee pricing for the highway EPC order",
+   "type": "specialist_request",
+   "group": "g_vantage",
+   "caseId": "opp_v2",
+   "owner": "u_kavita",
+   "requester": "u_rohan",
+   "created": "2026-11-05T10:15:00+05:30",
+   "due": "2026-11-09T10:15:00+05:30",
+   "clientDeadline": null,
+   "consequence": "Blocks the overdue client commitment W-2001.",
+   "state": "In progress",
+   "completion": "Indicative pricing and turnaround returned",
+   "dependsOn": [],
+   "esc": 1,
+   "vis": "internal",
+   "thread": [
+    {
+     "t": "2026-11-05T10:15:00+05:30",
+     "by": "u_rohan",
+     "text": "Submitted with the shared brief and the contract guarantee clauses."
+    },
+    {
+     "t": "2026-11-06T17:40:00+05:30",
+     "by": "u_kavita",
+     "text": "Reviewing the guarantee clauses with Legal."
+    }
+   ],
+   "hist": [
+    {
+     "t": "2026-11-11T10:00:00+05:30",
+     "by": "system",
+     "text": "Reminder sent to Kavita Rao (ladder level 1)"
+    }
+   ],
+   "v": 2,
+   "sla": "Standard: 2 working days"
+  },
+  {
+   "id": "W-2003",
+   "title": "Prepare for tomorrow’s CFO meeting",
+   "type": "task",
+   "group": "g_vantage",
+   "caseId": "mt_v_1118",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-11-16",
+   "due": "2026-11-17T17:00:00+05:30",
+   "clientDeadline": "2026-11-18T11:00:00+05:30",
+   "consequence": "Meeting Wednesday 11:00 with open commitments on both sides.",
+   "state": "Open",
+   "completion": "Brief reviewed and marked prepared",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-2004",
+   "title": "Obtain receivable ageing by authority from Vantage",
+   "type": "client_request",
+   "group": "g_vantage",
+   "caseId": "d_v1",
+   "owner": "u_rohan",
+   "requester": "u_ananya",
+   "created": "2026-11-13",
+   "due": "2026-11-20",
+   "clientDeadline": null,
+   "consequence": "Needed to answer Credit clarification C2; the proposal cannot go to committee without it.",
+   "state": "Open",
+   "completion": "Document received and validated",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1,
+   "from": "Rajiv Mehta (client)"
+  },
+  {
+   "id": "W-2005",
+   "title": "Clarification C1: explain headroom shortfall and proposed security",
+   "type": "clarification",
+   "group": "g_vantage",
+   "caseId": "d_v1",
+   "owner": "u_rohan",
+   "requester": "u_ananya",
+   "created": "2026-11-12",
+   "due": "2026-11-19",
+   "clientDeadline": null,
+   "consequence": "Blocks submission of the refinancing proposal to committee.",
+   "state": "In progress",
+   "completion": "RM response accepted by Credit",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [
+    {
+     "t": "2026-11-12T15:00:00+05:30",
+     "by": "u_ananya",
+     "text": "Headroom is ₹42cr against a ₹90–150cr request. How will the shortfall be covered, and what security is proposed? Cover appears below the 1.4x minimum."
+    },
+    {
+     "t": "2026-11-13T11:30:00+05:30",
+     "by": "u_rohan",
+     "text": "Working on the enhancement structure; will attach the revised cover calculation."
+    },
+    {
+     "t": "2026-11-14T09:00:00+05:30",
+     "by": "u_ananya",
+     "text": "Reopened: the revised cover still excludes the SPV receivables. Please confirm the charge."
+    }
+   ],
+   "hist": [],
+   "v": 3,
+   "reopened": 1
+  },
+  {
+   "id": "W-2006",
+   "title": "Clarification C2: receivable ageing by authority",
+   "type": "clarification",
+   "group": "g_vantage",
+   "caseId": "d_v1",
+   "owner": "u_rohan",
+   "requester": "u_sameer",
+   "created": "2026-11-13",
+   "due": "2026-11-20",
+   "clientDeadline": null,
+   "consequence": "Blocks the five-block Financials assessment.",
+   "state": "Needs information",
+   "completion": "Ageing attached and accepted",
+   "dependsOn": [
+    "W-2004"
+   ],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [
+    {
+     "t": "2026-11-13T10:00:00+05:30",
+     "by": "u_sameer",
+     "text": "Please provide receivable ageing by authority for the EPC contract."
+    }
+   ],
+   "hist": [],
+   "v": 1,
+   "reopened": 0
+  },
+  {
+   "id": "W-2007",
+   "title": "Introduce Structured Finance to the Vantage CFO",
+   "type": "commitment",
+   "group": "g_vantage",
+   "caseId": "opp_v1",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-11-02",
+   "due": "2026-11-27",
+   "clientDeadline": null,
+   "consequence": "The CFO expects a refinancing discussion before lender selection.",
+   "state": "Open",
+   "completion": "Introduction made and meeting scheduled",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-2008",
+   "title": "Review guarantee clause 14.2 of the highway contract",
+   "type": "legal",
+   "group": "g_vantage",
+   "caseId": "opp_v2",
+   "owner": "u_aditi",
+   "requester": "u_rohan",
+   "created": "2026-11-12",
+   "due": "2026-11-20",
+   "clientDeadline": null,
+   "consequence": "Needed before issuing guarantees on the contract wording.",
+   "state": "Accepted",
+   "completion": "Legal advice returned",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [],
+   "hist": [],
+   "v": 1,
+   "sla": "Standard: 5 working days"
+  },
+  {
+   "id": "W-2009",
+   "title": "Respond to MIU finding M1 (arbitration claim)",
+   "type": "miu_response",
+   "group": "g_vantage",
+   "caseId": "d_v1",
+   "owner": "u_rohan",
+   "requester": "u_miu",
+   "created": "2026-11-09",
+   "due": "2026-11-19",
+   "clientDeadline": null,
+   "consequence": "The credit note must address every MIU finding.",
+   "state": "Open",
+   "completion": "Response and evidence logged",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-2011",
+   "title": "Entity-match check: director on a stressed group company (M2)",
+   "type": "miu_response",
+   "group": "g_vantage",
+   "caseId": "d_v1",
+   "owner": "u_miu",
+   "requester": "u_rohan",
+   "created": "2026-11-13",
+   "due": "2026-11-19",
+   "clientDeadline": null,
+   "consequence": "Promoter block of the credit note stays pending until the match is confirmed.",
+   "state": "In progress",
+   "completion": "Match confirmed or rejected",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-3001",
+   "title": "REQ-1046 Review receivables trend under the EWS flag",
+   "type": "specialist_request",
+   "group": "g_nordholm",
+   "caseId": "a_n1",
+   "owner": "u_ananya",
+   "requester": "u_rohan",
+   "created": "2026-11-15T16:00:00+05:30",
+   "due": "2026-11-17T16:00:00+05:30",
+   "clientDeadline": null,
+   "consequence": "Credit review is paused until customer-wise ageing arrives.",
+   "state": "Needs information",
+   "completion": "Credit review completed",
+   "dependsOn": [
+    "W-3002"
+   ],
+   "esc": 0,
+   "vis": "internal",
+   "thread": [
+    {
+     "t": "2026-11-15T16:00:00+05:30",
+     "by": "u_rohan",
+     "text": "Submitted with the stock statement trend."
+    },
+    {
+     "t": "2026-11-16T12:05:00+05:30",
+     "by": "u_ananya",
+     "text": "Need customer-wise receivables ageing before I can complete the review."
+    }
+   ],
+   "hist": [],
+   "v": 2,
+   "sla": "Urgent: 1 working day"
+  },
+  {
+   "id": "W-3002",
+   "title": "Obtain customer-wise receivables ageing from Vasudha Rao",
+   "type": "client_request",
+   "group": "g_nordholm",
+   "caseId": "a_n1",
+   "owner": "u_rohan",
+   "requester": "u_ananya",
+   "created": "2026-11-16T12:10:00+05:30",
+   "due": "2026-11-17T16:00:00+05:30",
+   "clientDeadline": null,
+   "consequence": "Credit needs it by 16:00 today; the credit pitch stays blocked until the review completes.",
+   "state": "Open",
+   "completion": "Ageing received and forwarded to Credit",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1,
+   "from": "Vasudha Rao (client)"
+  },
+  {
+   "id": "W-3003",
+   "title": "Share cash-management proposal with no credit component",
+   "type": "commitment",
+   "group": "g_nordholm",
+   "caseId": "opp_n1",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-10-16",
+   "due": "2026-11-24",
+   "clientDeadline": "2026-11-25T10:30:00+05:30",
+   "consequence": "Offered at the last meeting; due before the 25 Nov review.",
+   "state": "Open",
+   "completion": "Proposal sent and logged",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-4001",
+   "title": "Confirm the packing credit review timeline to Nikhil Joshi",
+   "type": "commitment",
+   "group": "g_meridian",
+   "caseId": "opp_m2",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-10-23",
+   "due": "2026-11-06",
+   "clientDeadline": null,
+   "consequence": "Promised to the client; the review is due 10 Jan.",
+   "state": "Open",
+   "completion": "Timeline confirmed to the client",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  },
+  {
+   "id": "W-4002",
+   "title": "Share a one-page note on EUR exposure",
+   "type": "commitment",
+   "group": "g_meridian",
+   "caseId": "opp_m1",
+   "owner": "u_rohan",
+   "requester": "u_rohan",
+   "created": "2026-10-23",
+   "due": "2026-11-20",
+   "clientDeadline": "2026-11-23T15:00:00+05:30",
+   "consequence": "Promised ahead of the 23 Nov call.",
+   "state": "Open",
+   "completion": "Note sent and logged",
+   "dependsOn": [],
+   "esc": 0,
+   "vis": "client",
+   "thread": [],
+   "hist": [],
+   "v": 1
+  }
+ ],
+ "opps": [
+  {
+   "id": "opp_v1",
+   "group": "g_vantage",
+   "name": "Refinance the ₹180cr NCD maturing in February",
+   "product": "Term loan refinancing",
+   "family": "Lending",
+   "stage": "Need to validate",
+   "stakeholder": "p_rajiv",
+   "specialist": "u_arvind",
+   "origin": "Event: debt maturity (F-1001)",
+   "need": "Vantage will refinance rather than repay from cash flow; the A+ upgrade strengthens its negotiating position.",
+   "needStatus": "Hypothesis",
+   "timeline": "Before lender selection; NCD matures 9 Feb 2027",
+   "provider": "Existing lender; another bank appears to be positioning",
+   "facts": [
+    "F-1001",
+    "F-1003",
+    "F-1004",
+    "F-1002",
+    "F-1009"
+   ],
+   "deal": "d_v1",
+   "status": "active",
+   "range": {
+    "lo": 1.08,
+    "hi": 1.8,
+    "text": "₹90–150cr × 100% utilisation × 1.20% net yield over cost of funds",
+    "metric": "Net interest income a year, before credit cost and capital"
+   },
+   "feas": [
+    [
+     "Limit headroom",
+     "₹42cr available. Needs ₹48–108cr enhancement.",
+     "int"
+    ],
+    [
+     "Indicative pricing",
+     "9.40% to 9.85%, grid v3.2. Not for client quotation.",
+     "ind"
+    ],
+    [
+     "Return check",
+     "Above the RAROC hurdle at 9.40%. Credit to confirm.",
+     "ind"
+    ],
+    [
+     "Approval path",
+     "Credit committee, typically 15 to 20 working days",
+     "model"
+    ],
+    [
+     "Policy",
+     "Collateral cover 1.32x is below the 1.4x minimum",
+     "blk"
+    ]
+   ],
+   "nba": {
+    "action": "Secure a refinancing discussion with Structured Finance",
+    "why": "Time-bound event (84 days to maturity) with a competitor already active.",
+    "evidence": [
+     "F-1001",
+     "F-1003",
+     "F-1002"
+    ],
+    "clientValue": "A single refinancing partner before lender selection",
+    "bankValue": "Lead role on a ₹90–150cr facility",
+    "preconditions": "Credit confirms the limit enhancement route; collateral gap addressed",
+    "constraint": "Do not quote a rate before the enhancement is confirmed",
+    "alt": "Partial refinancing alongside the existing consortium",
+    "donot": "Do not recommend if the client states it will repay from cash flow",
+    "owner": "u_rohan",
+    "due": "2026-11-20"
+   }
+  },
+  {
+   "id": "opp_v2",
+   "group": "g_vantage",
+   "name": "Bank guarantees for the ₹520cr highway EPC order",
+   "product": "Performance and advance-payment guarantees",
+   "family": "Trade",
+   "stage": "Specialist engaged",
+   "stakeholder": "p_rajiv",
+   "specialist": "u_kavita",
+   "origin": "Event: contract award (F-1005)",
+   "need": "The authority will require guarantees before mobilisation; Vantage splits them across banks by turnaround speed.",
+   "needStatus": "Client-stated",
+   "timeline": "Estimated 3 Dec (assumption: 30 days from award)",
+   "provider": "Existing guarantee relationship",
+   "facts": [
+    "F-1005",
+    "F-1006",
+    "F-1008",
+    "F-1010",
+    "F-1011"
+   ],
+   "deal": null,
+   "status": "active",
+   "range": {
+    "lo": 0.52,
+    "hi": 0.78,
+    "text": "₹52–78cr requirement × 1.00% annual commission",
+    "metric": "Fee income a year"
+   },
+   "feas": [
+    [
+     "Limit headroom",
+     "₹42cr available; shared with the refinancing. Combined shortfall ₹100–186cr.",
+     "int"
+    ],
+    [
+     "Indicative pricing",
+     "1.00% a year commission. Not for client quotation.",
+     "ind"
+    ],
+    [
+     "Approval path",
+     "Delegated up to headroom; Credit committee above it",
+     "model"
+    ],
+    [
+     "Turnaround",
+     "Issuance turnaround to be confirmed by Trade Operations",
+     "need"
+    ]
+   ],
+   "nba": {
+    "action": "Update the CFO on the overdue pricing and confirm amounts and timing",
+    "why": "Client commitment overdue; meeting tomorrow; pricing is the only open item.",
+    "evidence": [
+     "F-1008",
+     "F-1005"
+    ],
+    "clientValue": "A clear turnaround commitment before guarantees are split",
+    "bankValue": "Larger share of ₹52–78cr guarantees",
+    "preconditions": "Trade returns pricing (REQ-1041); Legal reviews clause 14.2",
+    "constraint": "Do not commit a turnaround time before Trade Operations confirms it",
+    "alt": "Offer mobilisation working capital once the payment schedule is known",
+    "donot": "Do not pitch if the client has already allocated all guarantees",
+    "owner": "u_rohan",
+    "due": "2026-11-17"
+   }
+  },
+  {
+   "id": "opp_m1",
+   "group": "g_meridian",
+   "name": "FX forward cover for growing EUR receivables",
+   "product": "FX forwards",
+   "family": "Treasury",
+   "stage": "Hypothesis",
+   "stakeholder": "p_anil",
+   "specialist": "u_priya",
+   "origin": "Signal: export growth (F-2001, F-2002)",
+   "need": "New EUR receivables add margin volatility that Meridian is not managing. The MD calls hedging speculation, so start from the exposure.",
+   "needStatus": "Hypothesis",
+   "timeline": "No deadline; exposure is growing",
+   "provider": "None",
+   "facts": [
+    "F-2001",
+    "F-2002",
+    "F-2003",
+    "F-2004"
+   ],
+   "deal": null,
+   "status": "active",
+   "range": {
+    "lo": 0.036,
+    "hi": 0.054,
+    "text": "₹30–45cr EUR receivables × 60% hedge ratio (illustrative) × 0.20% margin",
+    "metric": "Treasury margin a year"
+   },
+   "feas": [
+    [
+     "Limit headroom",
+     "₹22cr fund-based headroom; no derivative limit",
+     "int"
+    ],
+    [
+     "Indicative pricing",
+     "0.15% to 0.25% margin on notional. Not for client quotation.",
+     "ind"
+    ],
+    [
+     "Approval path",
+     "New pre-settlement limit, typically 7 to 10 working days",
+     "model"
+    ],
+    [
+     "Suitability",
+     "Suitability assessment needed before offering derivatives",
+     "need"
+    ]
+   ],
+   "nba": {
+    "action": "Validate the EUR exposure, then bring in Treasury",
+    "why": "Exposure is growing and no hedge exists, but need is not confirmed and the MD is sceptical.",
+    "evidence": [
+     "F-2001",
+     "F-2002",
+     "F-2003"
+    ],
+    "clientValue": "Less margin volatility on EU receipts",
+    "bankValue": "Treasury margin and a deeper relationship",
+    "preconditions": "Exposure schedule received; suitability assessment",
+    "constraint": "Do not suggest a hedge ratio or product before Treasury completes suitability",
+    "alt": "Exposure review with Treasury, no commitment",
+    "donot": "Do not position options or structured products in a first discussion",
+    "owner": "u_rohan",
+    "due": "2026-11-23"
+   }
+  },
+  {
+   "id": "opp_m2",
+   "group": "g_meridian",
+   "name": "Increase packing credit to match export growth",
+   "product": "Packing credit",
+   "family": "Lending",
+   "stage": "Need to validate",
+   "stakeholder": "p_nikhil",
+   "specialist": "u_neha",
+   "origin": "Signal: exports vs utilisation (F-2001, F-2005)",
+   "need": "Export run rate rose to ₹83cr but packing credit use stayed at ₹13cr; funding source unknown.",
+   "needStatus": "Hypothesis",
+   "timeline": "Review due 10 Jan",
+   "provider": "Unknown",
+   "facts": [
+    "F-2001",
+    "F-2005"
+   ],
+   "deal": null,
+   "status": "active",
+   "range": {
+    "lo": 0.015,
+    "hi": 0.105,
+    "text": "₹1–7cr additional × 75% utilisation × 2.00% net yield",
+    "metric": "Net interest income a year"
+   },
+   "feas": [
+    [
+     "Limit headroom",
+     "₹22cr headroom covers the full range",
+     "int"
+    ],
+    [
+     "Pricing",
+     "8.90% to 9.40%, existing sanction terms",
+     "int"
+    ],
+    [
+     "Approval path",
+     "Within the existing limit; no fresh approval",
+     "int"
+    ],
+    [
+     "Assumption",
+     "Sizing depends on a 60 to 90 day working-capital cycle not yet confirmed",
+     "need"
+    ]
+   ],
+   "nba": {
+    "action": "Confirm the order-to-receipt cycle and how extra volume is funded",
+    "why": "Sizing depends on an unconfirmed cycle; the review timeline commitment is overdue.",
+    "evidence": [
+     "F-2001",
+     "F-2005"
+    ],
+    "clientValue": "Funding matched to export cycle",
+    "bankValue": "Higher utilisation of an existing limit",
+    "preconditions": "Cycle confirmed by the Finance Manager",
+    "constraint": "Do not size the need before the cycle is confirmed",
+    "alt": "None",
+    "donot": "",
+    "owner": "u_rohan",
+    "due": "2026-11-20"
+   }
+  },
+  {
+   "id": "opp_m3",
+   "group": "g_meridian",
+   "name": "Vendor finance programme for 12 vendors outside RBL",
+   "product": "Supply chain finance",
+   "family": "Supply-chain finance",
+   "stage": "Hypothesis",
+   "stakeholder": "p_nikhil",
+   "specialist": "u_farhan",
+   "origin": "Signal: payment flows (F-2006)",
+   "need": "Vendors may value earlier payment; a programme could extend RBL into Meridian’s supply base.",
+   "needStatus": "Hypothesis",
+   "timeline": "None",
+   "provider": "Vendors bank elsewhere",
+   "facts": [
+    "F-2006"
+   ],
+   "deal": null,
+   "status": "active",
+   "range": {
+    "lo": 0.042,
+    "hi": 0.084,
+    "text": "₹3–6cr programme × 70% utilisation × 2.00% net yield",
+    "metric": "Net interest income a year"
+   },
+   "feas": [
+    [
+     "Anchor approval",
+     "Programme approval needed, typically 15 working days",
+     "model"
+    ],
+    [
+     "Indicative pricing",
+     "9.25% to 9.75% to vendors. Not for quotation.",
+     "ind"
+    ],
+    [
+     "Vendor onboarding",
+     "KYC and account opening for each vendor",
+     "need"
+    ]
+   ],
+   "nba": {
+    "action": "Ask the Finance Manager to introduce the two largest vendors",
+    "why": "Introduction path exists; vendor interest and anchor approval are unconfirmed.",
+    "evidence": [
+     "F-2006"
+    ],
+    "clientValue": "Earlier payment for vendors without changing terms",
+    "bankValue": "New vendor relationships",
+    "preconditions": "Meridian agrees to the programme",
+    "constraint": "Do not contact vendors before Meridian agrees; never share which vendors bank elsewhere",
+    "alt": "None",
+    "donot": "",
+    "owner": "u_rohan",
+    "due": "2026-12-04"
+   }
+  },
+  {
+   "id": "opp_n1",
+   "group": "g_nordholm",
+   "name": "Collections diagnostic and cash management",
+   "product": "Cash management",
+   "family": "Cash management",
+   "stage": "Hypothesis",
+   "stakeholder": "p_vasudha",
+   "specialist": "u_neha",
+   "origin": "Signal: collections routing (F-3003)",
+   "need": "Slower collections may stem from the OEM customer’s cash pressure; a diagnostic helps the client and gives Credit what it needs.",
+   "needStatus": "Hypothesis",
+   "timeline": "Review meeting 25 Nov",
+   "provider": "Partial share of OEM collections",
+   "facts": [
+    "F-3001",
+    "F-3003",
+    "F-3004",
+    "F-3005"
+   ],
+   "deal": null,
+   "status": "active",
+   "range": {
+    "lo": 0.15,
+    "hi": 0.33,
+    "text": "₹5–11cr additional average balances × 3.00% margin",
+    "metric": "Balance contribution a year"
+   },
+   "feas": [
+    [
+     "Credit",
+     "Blocked: early warning flag; no new credit",
+     "blk"
+    ],
+    [
+     "Cash management",
+     "No credit exposure; allowed",
+     "int"
+    ],
+    [
+     "Approval",
+     "Regional Treasury, Singapore, must approve new mandates",
+     "need"
+    ]
+   ],
+   "nba": {
+    "action": "Request the receivables ageing and discuss collections routing",
+    "why": "Helps the client and gives Credit the information it needs; no new exposure.",
+    "evidence": [
+     "F-3001",
+     "F-3003"
+    ],
+    "clientValue": "Faster collections and visibility",
+    "bankValue": "Higher balances and flows",
+    "preconditions": "Credit review complete for any credit conversation",
+    "constraint": "Credit products blocked; cash management only",
+    "alt": "None",
+    "donot": "Do not discuss new credit or mention the internal early warning flag",
+    "owner": "u_rohan",
+    "due": "2026-11-24"
+   }
+  }
+ ],
+ "deals": [
+  {
+   "id": "d_v1",
+   "group": "g_vantage",
+   "name": "Vantage NCD refinancing",
+   "type": "Refinancing (term loan)",
+   "amount": "₹90–150cr",
+   "opp": "opp_v1",
+   "stage": "Deal canvas",
+   "rm": "u_rohan",
+   "analyst": "u_sameer",
+   "specialist": "u_arvind",
+   "reviewer": "u_ananya",
+   "targetDecision": "2027-01-15",
+   "clientDeadline": null,
+   "committee": "Credit committee (limit enhancement)",
+   "canvas": {
+    "purpose": "Refinance the ₹180cr NCD maturing on 9 Feb 2027",
+    "facility": "Term loan",
+    "amount": "₹90–150cr (RBL participation; client to confirm)",
+    "tenor": {
+     "v": "5 years",
+     "st": "Assumption"
+    },
+    "repayment": "Quarterly amortisation (assumption)",
+    "pricing": "9.40% to 9.85%, indicative (grid v3.2)",
+    "security": "First charge on project receivables and fixed assets; cover 1.32x",
+    "guarantees": "Promoter comfort letter (assumption)",
+    "covenants": "DSCR at least 1.3x; total debt to net worth at most 3.0x (assumption)",
+    "cp": "Board resolution; no-objection from consortium lenders",
+    "exceptions": "Collateral cover below the 1.4x policy minimum",
+    "agreed": "None agreed yet",
+    "authority": "Credit committee, limit enhancement above delegated authority"
+   },
+   "blocks": {
+    "Business": {
+     "owner": "u_rohan",
+     "status": "Ready",
+     "issue": "No material concern",
+     "conclusion": "Established EPC contractor; order book strengthened by the ₹520cr award.",
+     "open": 0
+    },
+    "Financials": {
+     "owner": "u_rohan",
+     "status": "Review",
+     "issue": "Spread exceptions pending",
+     "conclusion": "",
+     "open": 3
+    },
+    "Industry": {
+     "owner": "u_rohan",
+     "status": "Draft",
+     "issue": "Peer benchmark missing",
+     "conclusion": "EPC and infrastructure template selected; order concentration and receivable ageing by authority required.",
+     "open": 2
+    },
+    "Promoter": {
+     "owner": "u_miu",
+     "status": "Pending",
+     "issue": "Director match check with MIU",
+     "conclusion": "",
+     "open": 2
+    },
+    "Facility structure": {
+     "owner": "u_rohan",
+     "status": "Blocked",
+     "issue": "Security cover 1.32x below the 1.4x policy minimum",
+     "conclusion": "",
+     "open": 1
+    }
+   },
+   "docs": [
+    [
+     "Audited annual report FY26 (consolidated)",
+     "FY26",
+     "v2",
+     "Uploaded by Rohan Deshmukh",
+     "Extracted; 3 exceptions",
+     "current"
+    ],
+    [
+     "Standalone statements FY26",
+     "FY26",
+     "v1",
+     "Uploaded by Rohan Deshmukh",
+     "Validated",
+     "current"
+    ],
+    [
+     "Quarterly results Q2 FY27",
+     "Q2 FY27",
+     "v1",
+     "Public filing",
+     "Not yet used",
+     "current"
+    ],
+    [
+     "Debt schedule",
+     "Nov 2026",
+     "v1",
+     "Client",
+     "Extracted",
+     "current"
+    ],
+    [
+     "Annual report FY25",
+     "FY25",
+     "v1",
+     "Public filing",
+     "Superseded by FY26 comparatives",
+     "superseded"
+    ]
+   ],
+   "committeeDoc": "Committee pack not started"
+  }
+ ],
+ "miu": [
+  {
+   "id": "M1",
+   "deal": "d_v1",
+   "entity": "Vantage Infra Projects Ltd",
+   "finding": "Arbitration claim from a contractor on a past project",
+   "source": "Adverse media scan",
+   "date": "2026-11-09",
+   "materiality": "Medium",
+   "match": 0.82,
+   "response": "",
+   "evidence": [],
+   "impl": "",
+   "mitigation": "",
+   "status": "Open",
+   "inNote": false,
+   "work": "W-2009"
+  },
+  {
+   "id": "M2",
+   "deal": "d_v1",
+   "entity": "Director D. Raghavan (MCA)",
+   "finding": "Director also sits on the board of a stressed group company",
+   "source": "MCA director filings",
+   "date": "2026-11-11",
+   "materiality": "High",
+   "match": 0.64,
+   "response": "",
+   "evidence": [],
+   "impl": "",
+   "mitigation": "",
+   "status": "In MIU match check",
+   "inNote": false,
+   "work": "W-2011"
+  }
+ ],
+ "spread": {
+  "deal": "d_v1",
+  "doc": "Audited annual report FY26 (consolidated)",
+  "unit": "₹ crore",
+  "exported": false,
+  "lines": [
+   {
+    "id": "L01",
+    "label": "Revenue from operations",
+    "fy26": 2410,
+    "fy25": 2105,
+    "fy24": 1880,
+    "page": "p. 82",
+    "conf": 98,
+    "group": "P&L"
+   },
+   {
+    "id": "L02",
+    "label": "EBITDA",
+    "fy26": 312,
+    "fy25": 268,
+    "fy24": 231,
+    "page": "p. 82",
+    "conf": 97,
+    "group": "P&L"
+   },
+   {
+    "id": "L03",
+    "label": "Profit after tax",
+    "fy26": 142,
+    "fy25": 118,
+    "fy24": 96,
+    "page": "p. 82",
+    "conf": 98,
+    "group": "P&L"
+   },
+   {
+    "id": "L04",
+    "label": "Net worth",
+    "fy26": 1120,
+    "fy25": 985,
+    "fy24": 870,
+    "page": "p. 84",
+    "conf": 96,
+    "group": "Balance sheet"
+   },
+   {
+    "id": "L05",
+    "label": "Long-term borrowings (balance sheet)",
+    "fy26": 124,
+    "fy25": 1085,
+    "fy24": 960,
+    "page": "p. 84",
+    "conf": 91,
+    "group": "Balance sheet",
+    "noteRef": {
+     "label": "Note 14 borrowings",
+     "value": 1240,
+     "page": "p. 97"
+    }
+   },
+   {
+    "id": "L06",
+    "label": "Other non-current liabilities",
+    "fy26": 180,
+    "fy25": 165,
+    "fy24": 150,
+    "page": "p. 84",
+    "conf": 95,
+    "group": "Balance sheet"
+   },
+   {
+    "id": "L07",
+    "label": "Trade payables",
+    "fy26": 410,
+    "fy25": 372,
+    "fy24": 340,
+    "page": "p. 85",
+    "conf": 96,
+    "group": "Current liabilities"
+   },
+   {
+    "id": "L08",
+    "label": "Short-term borrowings",
+    "fy26": 160,
+    "fy25": 140,
+    "fy24": 120,
+    "page": "p. 85",
+    "conf": 95,
+    "group": "Current liabilities"
+   },
+   {
+    "id": "L09",
+    "label": "Other current liabilities",
+    "fy26": 98.8,
+    "fy25": 90,
+    "fy24": 84,
+    "page": "p. 85",
+    "conf": 94,
+    "group": "Current liabilities"
+   },
+   {
+    "id": "L10",
+    "label": "Total current liabilities (reported)",
+    "fy26": 675,
+    "fy25": 602,
+    "fy24": 544,
+    "page": "p. 85",
+    "conf": 96,
+    "group": "Current liabilities"
+   },
+   {
+    "id": "L11",
+    "label": "Total equity and liabilities",
+    "fy26": 3215,
+    "fy25": 2870,
+    "fy24": 2540,
+    "page": "p. 84",
+    "conf": 97,
+    "group": "Balance sheet"
+   },
+   {
+    "id": "L12",
+    "label": "Total assets",
+    "fy26": 3215,
+    "fy25": 2870,
+    "fy24": 2540,
+    "page": "p. 83",
+    "conf": 97,
+    "group": "Balance sheet"
+   },
+   {
+    "id": "L13",
+    "label": "Contingent liabilities",
+    "fy26": 412,
+    "fy25": 350,
+    "fy24": 310,
+    "page": "p. 112",
+    "conf": 62,
+    "group": "Notes"
+   },
+   {
+    "id": "L14",
+    "label": "Net cash from operations",
+    "fy26": 285,
+    "fy25": 240,
+    "fy24": 205,
+    "page": "p. 86",
+    "conf": 95,
+    "group": "Cash flow"
+   },
+   {
+    "id": "L15",
+    "label": "Net cash from investing",
+    "fy26": -340,
+    "fy25": -290,
+    "fy24": -250,
+    "page": "p. 86",
+    "conf": 95,
+    "group": "Cash flow"
+   },
+   {
+    "id": "L16",
+    "label": "Net cash from financing",
+    "fy26": 120,
+    "fy25": 95,
+    "fy24": 70,
+    "page": "p. 86",
+    "conf": 94,
+    "group": "Cash flow"
+   },
+   {
+    "id": "L17",
+    "label": "Opening cash",
+    "fy26": 210,
+    "fy25": 165,
+    "fy24": 140,
+    "page": "p. 86",
+    "conf": 95,
+    "group": "Cash flow"
+   },
+   {
+    "id": "L18",
+    "label": "Closing cash",
+    "fy26": 275,
+    "fy25": 210,
+    "fy24": 165,
+    "page": "p. 86",
+    "conf": 95,
+    "group": "Cash flow"
+   }
+  ],
+  "status": {},
+  "notes": {}
+ },
+ "alerts": [
+  {
+   "id": "a_n1",
+   "group": "g_nordholm",
+   "title": "Receivable days up 35% year on year",
+   "category": "Working capital",
+   "source": "Client stock statements; EWS engine",
+   "detected": "2026-11-16T09:00:00+05:30",
+   "severity": "High",
+   "exposure": 4,
+   "blocksCredit": true,
+   "covenant": false,
+   "reviewDays": 87,
+   "state": "New",
+   "facts": [
+    "F-3001",
+    "F-3002",
+    "F-3003",
+    "F-3005"
+   ],
+   "context": "No earlier related alerts. Controller attributes it to the OEM customer’s own cash pressure. Credit review needs customer-wise ageing by 16:00 today.",
+   "required": "Obtain customer-wise receivables ageing; complete the Credit review",
+   "work": [
+    "W-3001",
+    "W-3002"
+   ]
+  },
+  {
+   "id": "a_m1",
+   "group": "g_meridian",
+   "title": "New EU buyer is 38% of export receipts",
+   "category": "Concentration",
+   "source": "Inward remittances; Compass concentration rule",
+   "detected": "2026-11-14",
+   "severity": "Medium",
+   "exposure": 13,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 54,
+   "state": "New",
+   "facts": [
+    "F-2007",
+    "F-2002"
+   ],
+   "context": "The buyer started in October. No covenant covers buyer concentration. Annual review is due on 10 Jan.",
+   "required": "Confirm buyer credit terms and update the export concentration view",
+   "work": []
+  },
+  {
+   "id": "a_v1",
+   "group": "g_vantage",
+   "title": "Director resigned from project SPV 2",
+   "category": "Governance",
+   "source": "MCA director filings",
+   "detected": "2026-11-13",
+   "severity": "Low",
+   "exposure": 178,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 59,
+   "state": "New",
+   "facts": [],
+   "context": "SPV 2 is a non-material subsidiary. A replacement director was appointed on the same filing.",
+   "required": "No action unless the replacement raises a flag",
+   "work": [],
+   "key": "governance"
+  },
+  {
+   "id": "a_k1",
+   "group": "g_kestrel",
+   "title": "Long-tenured executive resigned (routine)",
+   "category": "Governance",
+   "source": "Exchange filing",
+   "detected": "2026-11-12",
+   "severity": "Low",
+   "exposure": 84,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 31,
+   "state": "New",
+   "facts": [],
+   "context": "Planned succession announced earlier.",
+   "required": "No action expected",
+   "work": [],
+   "key": "governance"
+  },
+  {
+   "id": "a_a1",
+   "group": "g_astra",
+   "title": "Independent director replaced (routine)",
+   "category": "Governance",
+   "source": "MCA director filings",
+   "detected": "2026-11-13",
+   "severity": "Low",
+   "exposure": 62,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 66,
+   "state": "New",
+   "facts": [],
+   "context": "Rotation at end of term.",
+   "required": "No action expected",
+   "work": [],
+   "key": "governance"
+  },
+  {
+   "id": "a_h1",
+   "group": "g_helix",
+   "title": "Statutory auditor changed (routine rotation)",
+   "category": "Governance",
+   "source": "MCA filings",
+   "detected": "2026-11-10",
+   "severity": "Low",
+   "exposure": 38,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 13,
+   "state": "New",
+   "facts": [],
+   "context": "Rotation at end of term; same audit network.",
+   "required": "No action expected",
+   "work": [],
+   "key": "governance"
+  },
+  {
+   "id": "a_c1",
+   "group": "g_corvina",
+   "title": "Plant inspection observation reported (source A)",
+   "category": "Operations",
+   "source": "News feed",
+   "detected": "2026-11-11",
+   "severity": "Low",
+   "exposure": 190,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 105,
+   "state": "New",
+   "facts": [],
+   "context": "Same event as the report from source B.",
+   "required": "Review once",
+   "work": [],
+   "key": "duplicate"
+  },
+  {
+   "id": "a_c2",
+   "group": "g_corvina",
+   "title": "Plant inspection observation reported (source B)",
+   "category": "Operations",
+   "source": "News feed",
+   "detected": "2026-11-12",
+   "severity": "Low",
+   "exposure": 190,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 105,
+   "state": "New",
+   "facts": [],
+   "context": "Duplicate of source A.",
+   "required": "Review once",
+   "work": [],
+   "key": "duplicate"
+  },
+  {
+   "id": "a_b1",
+   "group": "g_bluewater",
+   "title": "Rating outlook affirmed at stable",
+   "category": "Rating",
+   "source": "Rating agency",
+   "detected": "2026-11-09",
+   "severity": "Low",
+   "exposure": 298,
+   "blocksCredit": false,
+   "covenant": false,
+   "reviewDays": 80,
+   "state": "New",
+   "facts": [],
+   "context": "No change in rating.",
+   "required": "No action required",
+   "work": [],
+   "key": "informational"
+  }
+ ],
+ "plans": {
+  "g_vantage": {
+   "ambition": "Deepen",
+   "objectives": [
+    {
+     "t": "Lead the February NCD refinancing",
+     "target": "Mandate for the ₹90–150cr refinancing",
+     "gap": "No client-confirmed need; collateral below policy",
+     "owner": "Rohan Deshmukh",
+     "due": "2027-01-15",
+     "measure": "Credit committee approval",
+     "progress": "Hypothesis"
+    },
+    {
+     "t": "Win a larger share of highway guarantees",
+     "target": "Guarantee issuance within the client timeline",
+     "gap": "Turnaround perceived slower than peers; pricing overdue",
+     "owner": "Rohan Deshmukh",
+     "due": "2026-12-03",
+     "measure": "Share of ₹52–78cr",
+     "progress": "In progress"
+    },
+    {
+     "t": "Become the lead transaction bank",
+     "target": "Escrow and collections for highway receipts",
+     "gap": "No transaction-banking mandate",
+     "owner": "Rohan Deshmukh",
+     "due": "2027-03-31",
+     "measure": "Collections routed via RBL",
+     "progress": "Not started"
+    }
+   ],
+   "cadence": "Every 30 days (tier 1)",
+   "stakeholderPlan": [
+    [
+     "Rajiv Mehta",
+     "Strong",
+     "Strong, with a faster response on guarantees",
+     "Rohan Deshmukh",
+     "Meeting 18 Nov"
+    ],
+    [
+     "Dilip Raghavan",
+     "Weak",
+     "Established",
+     "Meera Kapoor (introduction)",
+     "Request an introduction through the CFO"
+    ]
+   ]
+  },
+  "g_meridian": {
+   "ambition": "Grow",
+   "objectives": [
+    {
+     "t": "Introduce FX cover",
+     "target": "Exposure review with Treasury",
+     "gap": "MD sceptical; no policy",
+     "owner": "Rohan Deshmukh",
+     "due": "2026-12-31",
+     "measure": "Treasury session held",
+     "progress": "Not started"
+    }
+   ],
+   "cadence": "Every 60 days (tier 2)",
+   "stakeholderPlan": [
+    [
+     "Anil Patil",
+     "Developing",
+     "Established",
+     "Priya Shah (Treasury)",
+     "Start from the exposure, not the product"
+    ]
+   ]
+  },
+  "g_nordholm": {
+   "ambition": "Protect",
+   "objectives": [
+    {
+     "t": "Understand collections slowdown",
+     "target": "Receivables ageing shared; Credit review completed",
+     "gap": "Ageing outstanding",
+     "owner": "Rohan Deshmukh",
+     "due": "2026-11-25",
+     "measure": "Credit review closed",
+     "progress": "In progress"
+    }
+   ],
+   "cadence": "Every 30 days (tier 1)",
+   "stakeholderPlan": [
+    [
+     "Vasudha Rao",
+     "Established",
+     "Established",
+     "Neha Iyer (Cash Management)",
+     "Collections diagnostic"
+    ],
+    [
+     "Regional Treasury, Singapore",
+     "Unknown",
+     "Developing",
+     "Meera Kapoor",
+     "Plan an introduction for any new mandate"
+    ]
+   ]
+  }
+ },
+ "events": [
+  {
+   "g": "g_helix",
+   "d": "2026-11-30",
+   "k": "Annual review",
+   "l": "Helix Packaging review due"
+  },
+  {
+   "g": "g_vantage",
+   "d": "2026-12-03",
+   "k": "Guarantee deadline",
+   "l": "Highway guarantees likely needed (estimate)"
+  },
+  {
+   "g": "g_kestrel",
+   "d": "2026-12-18",
+   "k": "Annual review",
+   "l": "Kestrel Polymers review due"
+  },
+  {
+   "g": "g_delta",
+   "d": "2026-12-29",
+   "k": "Annual review",
+   "l": "Delta Agro Foods review due"
+  },
+  {
+   "g": "g_nordholm",
+   "d": "2026-12-14",
+   "k": "KYC renewal",
+   "l": "Nordholm KYC refresh due"
+  },
+  {
+   "g": "g_meridian",
+   "d": "2027-01-10",
+   "k": "Annual review",
+   "l": "Meridian packing credit review"
+  },
+  {
+   "g": "g_vantage",
+   "d": "2027-01-15",
+   "k": "Annual review",
+   "l": "Vantage facilities review; target committee date"
+  },
+  {
+   "g": "g_vantage",
+   "d": "2027-02-09",
+   "k": "Maturity",
+   "l": "₹180cr NCD matures"
+  },
+  {
+   "g": "g_nordholm",
+   "d": "2027-02-12",
+   "k": "Annual review",
+   "l": "Nordholm review"
+  },
+  {
+   "g": "g_bluewater",
+   "d": "2027-02-05",
+   "k": "Annual review",
+   "l": "Bluewater Marine review"
+  },
+  {
+   "g": "g_meridian",
+   "d": "2027-03-31",
+   "k": "Maturity",
+   "l": "Meridian packing credit limit expires"
+  }
+ ]
+}

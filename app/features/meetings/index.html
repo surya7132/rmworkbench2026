@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Meetings{% endblock %}
+{% block heading %}Meetings{% endblock %}
+{% block content %}
+{% macro row(m, cta, accent) %}
+<a href="/meetings/{{ m.id }}" class="group flex flex-wrap items-center gap-4 rounded-xl border bg-white p-4 shadow-sm transition hover:border-blue-300 hover:shadow-md {{ accent }}">
+  <div class="w-20 shrink-0 text-center">
+    <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">{{ m.when.strftime('%b') }}</div>
+    <div class="text-2xl font-extrabold leading-none text-slate-900">{{ m.when.strftime('%d') }}</div>
+    <div class="mt-1 text-[11px] text-slate-500">{{ m.when.strftime('%H:%M') }}</div>
+  </div>
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="font-semibold text-slate-900 group-hover:text-blue-800">{{ m.client_name }}</span>
+      <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">{{ m.source_label }}</span>
+      {% if m.status == 'scheduled' %}<span class="rounded-full px-2 py-0.5 text-[11px] font-semibold {{ 'bg-green-100 text-green-800' if m.prep_status == 'ready' else 'bg-amber-100 text-amber-800' }}">{{ 'Prep ready' if m.prep_status == 'ready' else 'Prep incomplete' }}</span>{% endif %}
+    </div>
+    <div class="mt-0.5 text-sm text-slate-700">{{ m.title }}</div>
+    <div class="mt-0.5 text-xs text-slate-500">{% if m.attendees %}With {{ m.attendees|map(attribute='name')|join(', ') }}{% endif %}{% if m.location %} · {{ m.location }}{% endif %}{% if m.duration_min %} · {{ m.duration_min }} min{% endif %}</div>
+  </div>
+  <span class="rounded-lg px-3 py-1.5 text-xs font-semibold {{ 'bg-blue-600 text-white' if m.status != 'held' else 'border border-slate-300 text-slate-700' }}">{{ cta }}</span>
+</a>
+{% endmacro %}
+
+{% if pending %}
+<section class="mb-8">
+  <h2 class="mb-1 text-sm font-bold text-slate-900">Add your notes <span class="ml-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">{{ pending|length }}</span></h2>
+  <p class="mb-3 text-xs text-slate-500">These meetings happened but nothing was written down yet. Type it or just talk: the follow-ups go straight to the work queue.</p>
+  <div class="space-y-2.5">{% for m in pending %}{{ row(m, 'Add notes', 'border-amber-200') }}{% endfor %}</div>
+</section>
+{% endif %}
+
+<section class="mb-8">
+  <h2 class="mb-1 text-sm font-bold text-slate-900">Coming up <span class="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-800">{{ upcoming|length }}</span></h2>
+  <p class="mb-3 text-xs text-slate-500">Pulled from your calendar. Open one to see the brief: what changed since last time, with the source of every line.</p>
+  <div class="space-y-2.5">
+    {% for m in upcoming %}{{ row(m, 'Open brief', 'border-slate-200') }}{% else %}<div class="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500">No upcoming meetings.</div>{% endfor %}
+  </div>
+</section>
+
+<section class="mb-8">
+  <h2 class="mb-3 text-sm font-bold text-slate-900">Recently held</h2>
+  <div class="space-y-2.5">{% for m in recent %}{{ row(m, 'View', 'border-slate-200') }}{% endfor %}</div>
+</section>
+{% endblock %}
